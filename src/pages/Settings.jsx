@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AccessControl from './AccessControl';
 import NotificationSettings from './NotificationSettings';
-import { FaLock, FaBell, FaUserEdit } from 'react-icons/fa';
+import { FaLock, FaBell, FaUserEdit, FaArrowLeft } from 'react-icons/fa';
 
 function Settings() {
   const [activeSection, setActiveSection] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const navigate = useNavigate();
 
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? '' : section);
@@ -44,6 +46,7 @@ function Settings() {
         }
 
         .settings-card {
+          position: relative;
           background: rgba(255, 255, 255, 0.2);
           padding: 40px;
           border-radius: 20px;
@@ -53,6 +56,27 @@ function Settings() {
           max-width: 800px;
           color: #333;
           border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .back-btn {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background-color: #00BFFF;
+          color: #fff;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .back-btn:hover {
+          background-color: #0099cc;
         }
 
         .settings-card h2 {
@@ -134,11 +158,22 @@ function Settings() {
             font-size: 14px;
             padding: 10px 16px;
           }
+
+          .back-btn {
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+          }
         }
       `}</style>
 
       <div className="settings-container">
         <div className="settings-card">
+          <button className="back-btn" onClick={() => navigate('/dashboard')}>
+            <FaArrowLeft /> Back to Dashboard
+          </button>
+
           <h2>⚙️ Settings Panel</h2>
           <p>Customize your experience and manage system preferences</p>
 

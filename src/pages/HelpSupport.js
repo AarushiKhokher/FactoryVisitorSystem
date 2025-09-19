@@ -1,10 +1,11 @@
-// src/pages/HelpSupport.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function HelpSupport() {
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [openIndex, setOpenIndex] = useState(null);
+  const navigate = useNavigate();
 
   const faqs = [
     { question: 'How do I register a visitor?', answer: 'Go to the Register page and fill out the visitor details.' },
@@ -34,12 +35,18 @@ function HelpSupport() {
 
   return (
     <div style={styles.page}>
+      {/* ✅ Back to Dashboard Button */}
+      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
+        ⬅ Back to Dashboard
+      </button>
+
       <h2 style={styles.title}>Help & Support</h2>
       <p style={styles.subtitle}>Find answers or reach out for assistance.</p>
 
       {/* 📧 Support Email */}
       <div style={styles.emailBox}>
-        <strong>Contact Support:</strong> <a href="mailto:support@factoryvisitorsystem.com">support@factoryvisitorsystem.com</a>
+        <strong>Contact Support:</strong>{' '}
+        <a href="mailto:support@factoryvisitorsystem.com">support@factoryvisitorsystem.com</a>
       </div>
 
       {/* 🔍 FAQ Search */}
@@ -111,10 +118,24 @@ function HelpSupport() {
 
 const styles = {
   page: {
+    position: 'relative',
     padding: '30px',
     fontFamily: 'Segoe UI, sans-serif',
     backgroundColor: '#f0f8ff',
     minHeight: '100vh',
+  },
+  backButton: {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    backgroundColor: '#00BFFF',
+    color: '#fff',
+    border: 'none',
+    padding: '10px 16px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
   },
   title: {
     fontSize: '32px',
@@ -211,3 +232,4 @@ const styles = {
 };
 
 export default HelpSupport;
+

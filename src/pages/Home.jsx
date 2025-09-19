@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
- 
+
 function Home() {
   const styles = {
     page: {
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1E3C72, #2A5298)',
-      color: '#fff',
+      backgroundImage: 'url("/image.png")',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
       fontFamily: 'Segoe UI, sans-serif',
       display: 'flex',
       flexDirection: 'column',
@@ -20,11 +23,13 @@ function Home() {
       fontSize: '42px',
       fontWeight: 'bold',
       marginBottom: '20px',
+      color: '#000', // changed to black
     },
     subtitle: {
       fontSize: '18px',
       marginBottom: '40px',
       maxWidth: '700px',
+      color: '#000', // changed to black
     },
     navLinks: {
       display: 'flex',
@@ -47,14 +52,14 @@ function Home() {
       transition: 'transform 0.2s ease',
     },
   };
- 
+
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Welcome to Factory Visitor System</h1>
       <p style={styles.subtitle}>
         Secure, smart, and simple visitor management for modern factories.
       </p>
- 
+
       <div style={styles.navLinks}>
         <Link to="/login" style={styles.linkButton}>
           <FaSignInAlt /> Login
@@ -66,5 +71,6 @@ function Home() {
     </div>
   );
 }
- 
+
 export default Home;
+

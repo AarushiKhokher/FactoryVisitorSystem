@@ -1,5 +1,5 @@
-// src/pages/Zone.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { zoneList } from './ZoneData';
 
 function Zone() {
@@ -9,6 +9,8 @@ function Zone() {
     { name: 'Ravi Kumar', zones: [3, 6] },
     { name: 'Priya Sharma', zones: [1, 7, 10] },
   ]);
+
+  const navigate = useNavigate();
 
   const toggleZoneAccess = (personIndex, zoneId) => {
     const updated = [...people];
@@ -23,6 +25,11 @@ function Zone() {
 
   return (
     <div style={styles.page}>
+      {/* ✅ Back to Dashboard Button */}
+      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
+        ⬅ Back to Dashboard
+      </button>
+
       <h2 style={styles.title}>Factory Zones & Access Control</h2>
       <p style={styles.subtitle}>View zones and assign access to personnel.</p>
 
@@ -68,10 +75,24 @@ function Zone() {
 
 const styles = {
   page: {
+    position: 'relative',
     padding: '30px',
     fontFamily: 'Segoe UI, sans-serif',
     backgroundColor: '#f4f8fb',
     minHeight: '100vh',
+  },
+  backButton: {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    backgroundColor: '#00BFFF',
+    color: '#fff',
+    border: 'none',
+    padding: '10px 16px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
   },
   title: {
     fontSize: '32px',
@@ -130,3 +151,4 @@ const styles = {
 };
 
 export default Zone;
+

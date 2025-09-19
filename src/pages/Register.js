@@ -7,10 +7,15 @@ function Register() {
   const [fullName, setFullName] = useState('');
   const [visitorId, setVisitorId] = useState('');
   const [idGenerated, setIdGenerated] = useState(false);
+  const [showManualForm, setShowManualForm] = useState(false);
+  const [manualName, setManualName] = useState('');
+  const [manualContact, setManualContact] = useState('');
+  const [manualEmail, setManualEmail] = useState('');
+  const [manualPassword, setManualPassword] = useState('');
   const navigate = useNavigate();
 
-  // Replace with your actual IP or deployed URL
-  const qrMessage = "http://10.112.52.30:3000/register?scan=true";
+  // ✅ Replace with your actual Vercel URL
+  const qrMessage = "https://factory-visitor-system.vercel.app/register?scan=true";
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -35,6 +40,14 @@ function Register() {
     }
   };
 
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (manualName && manualContact && manualEmail && manualPassword) {
+      alert(`Manual Registration Successful for ${manualName}`);
+      navigate('/login');
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -42,7 +55,8 @@ function Register() {
           margin: 0;
           padding: 0;
           font-family: 'Segoe UI', sans-serif;
-          background: linear-gradient(135deg, #1E3C72, #2A5298);
+          background: url('/image.png') no-repeat center center fixed;
+          background-size: cover;
           height: 100vh;
           display: flex;
           justify-content: center;
@@ -50,14 +64,14 @@ function Register() {
         }
 
         .card {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.7);
           padding: 40px 30px;
           border-radius: 16px;
           backdrop-filter: blur(12px);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
           width: 100%;
           max-width: 420px;
-          color: #fff;
+          color: #000;
         }
 
         .form-group {
@@ -68,11 +82,15 @@ function Register() {
           width: 100%;
           padding: 14px;
           border: none;
-          border-bottom: 2px solid #ccc;
+          border-bottom: 2px solid #666;
           background: transparent;
-          color: #fff;
+          color: #000;
           font-size: 16px;
           outline: none;
+        }
+
+        .form-group input::placeholder {
+          color: #555;
         }
 
         .form-group input:focus {
@@ -95,17 +113,13 @@ function Register() {
           text-align: center;
           margin-top: 20px;
           font-size: 14px;
+          color: #000;
         }
 
         .login-link a {
           color: #00BFFF;
           text-decoration: none;
           font-weight: 500;
-        }
-
-        .qr-box {
-          text-align: center;
-          margin-bottom: 30px;
         }
 
         .scan-btn {
@@ -118,6 +132,11 @@ function Register() {
           font-weight: bold;
           margin-top: 10px;
         }
+
+        .manual-popup h3 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
       `}</style>
 
       <motion.div
@@ -128,45 +147,106 @@ function Register() {
       >
         <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Visitor Registration</h2>
 
-        <div className="qr-box">
-          <QRCodeCanvas value={qrMessage} size={200} />
-          <p style={{ fontSize: '12px', color: '#ccc' }}>
-            Scan this QR code using your mobile. It will open this page and auto-generate your Visitor ID.
-          </p>
-          <button className="scan-btn" onClick={handleScanTrigger}>
-            I've Scanned – Generate Visitor ID
-          </button>
-        </div>
+        {!showManualForm && (
+          <>
+            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+              <QRCodeCanvas value={qrMessage} size={200} />
+              <p style={{ fontSize: '12px', color: '#333' }}>
+                Scan this QR code using your mobile. It will open this page and auto-generate your Visitor ID.
+              </p>
+              <button className="scan-btn" onClick={handleScanTrigger}>
+                I've Scanned – Generate Visitor ID
+              </button>
+              <button className="scan-btn" onClick={() => setShowManualForm(true)}>
+                Manual Registration
+              </button>
+            </div>
 
-        {idGenerated && (
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="text"
-                placeholder="Enter your full name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                value={visitorId}
-                readOnly
-              />
-            </div>
-            <button type="submit" className="register-btn">Register</button>
-          </form>
+            {idGenerated && (
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    value={visitorId}
+                    readOnly
+                  />
+                </div>
+                <button type="submit" className="register-btn">Register</button>
+              </form>
+            )}
+
+            <p className="login-link">
+              Already registered? <Link to="/login">Login</Link>
+            </p>
+          </>
         )}
 
-        <p className="login-link">
-          Already registered? <Link to="/login">Login</Link>
-        </p>
+        {showManualForm && (
+          <>
+            <div className="manual-popup">
+              <h3>Manual Registration</h3>
+              <form onSubmit={handleManualSubmit}>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={manualName}
+                    onChange={(e) => setManualName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder="Contact Number"
+                    value={manualContact}
+                    onChange={(e) => setManualContact(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={manualEmail}
+                    onChange={(e) => setManualEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    value={manualPassword}
+                    onChange={(e) => setManualPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit" className="register-btn">Submit</button>
+              </form>
+              <button className="scan-btn" onClick={() => setShowManualForm(false)}>
+                Close Manual Registration
+              </button>
+            </div>
+          </>
+        )}
       </motion.div>
     </>
   );
 }
 
 export default Register;
+
+
+
+
 

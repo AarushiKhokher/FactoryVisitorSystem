@@ -1,11 +1,43 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Plot from 'react-plotly.js';
- 
+
 function ViewReport() {
+  const navigate = useNavigate();
+
+  const styles = {
+    container: {
+      position: 'relative',
+      padding: '20px',
+      fontFamily: 'Segoe UI, sans-serif',
+      backgroundColor: '#e6f2ff',
+      color: '#000',
+      minHeight: '100vh',
+    },
+    backButton: {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      backgroundColor: '#00BFFF',
+      color: '#fff',
+      border: 'none',
+      padding: '10px 16px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+    },
+  };
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Segoe UI, sans-serif', backgroundColor: '#e6f2ff', color: '#000' }}>
+    <div style={styles.container}>
+      {/* ✅ Back to Dashboard Button */}
+      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
+        ⬅ Back to Dashboard
+      </button>
+
       <h2>📊 Visitor Report Overview</h2>
- 
+
       <div style={{ marginBottom: '40px' }}>
         <h3>Visitor Status Distribution (Active vs Inactive)</h3>
         <Plot
@@ -22,7 +54,7 @@ function ViewReport() {
           }}
         />
       </div>
- 
+
       <div style={{ marginBottom: '40px' }}>
         <h3>Gender Distribution of Visitors (Male vs Female)</h3>
         <Plot
@@ -40,7 +72,7 @@ function ViewReport() {
           }}
         />
       </div>
- 
+
       <div>
         <h3>Daily Visitor Check-ins (Last 7 Days)</h3>
         <Plot
@@ -62,6 +94,6 @@ function ViewReport() {
     </div>
   );
 }
- 
+
 export default ViewReport;
- 
+

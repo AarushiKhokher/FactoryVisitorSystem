@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
- 
+import { useNavigate } from 'react-router-dom';
+
 function AboutUs() {
   const [fadeIn, setFadeIn] = useState(false);
   const [openSection, setOpenSection] = useState(null);
- 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setTimeout(() => setFadeIn(true), 100);
   }, []);
- 
+
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
- 
+
   const styles = {
     page: {
       fontFamily: 'Segoe UI, sans-serif',
@@ -22,6 +24,7 @@ function AboutUs() {
       opacity: fadeIn ? 1 : 0,
       transform: fadeIn ? 'translateY(0)' : 'translateY(20px)',
       transition: 'opacity 1s ease, transform 1s ease',
+      position: 'relative',
     },
     header: {
       fontSize: '36px',
@@ -29,6 +32,19 @@ function AboutUs() {
       textAlign: 'center',
       marginBottom: '20px',
       color: '#1E3C72',
+    },
+    backButton: {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      backgroundColor: '#00BFFF',
+      color: '#fff',
+      border: 'none',
+      padding: '10px 16px',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
     },
     section: {
       marginBottom: '20px',
@@ -78,18 +94,22 @@ function AboutUs() {
       textAlign: 'center',
     },
   };
- 
+
   const teamMembers = [
     { name: 'Aarushi', role: 'Frontend Developer' },
     { name: 'Dolly', role: 'UI/UX Designer' },
     { name: 'Pranali', role: 'Backend Developer' },
     { name: 'Abhinav', role: 'Project Lead' },
   ];
- 
+
   return (
     <div style={styles.page}>
+      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
+        ⬅ Back to Dashboard
+      </button>
+
       <div style={styles.header}>About Cognitrack</div>
- 
+
       {/* Our Mission */}
       <div style={styles.section}>
         <div style={styles.title} onClick={() => toggleSection('mission')}>
@@ -103,7 +123,7 @@ function AboutUs() {
           </p>
         </div>
       </div>
- 
+
       {/* Key Features */}
       <div style={styles.section}>
         <div style={styles.title} onClick={() => toggleSection('features')}>
@@ -119,7 +139,7 @@ function AboutUs() {
           </ul>
         </div>
       </div>
- 
+
       {/* Meet the Team */}
       <div style={styles.section}>
         <div style={styles.title} onClick={() => toggleSection('team')}>
@@ -141,7 +161,7 @@ function AboutUs() {
           </div>
         </div>
       </div>
- 
+
       {/* Contact Us */}
       <div style={styles.section}>
         <div style={styles.title} onClick={() => toggleSection('contact')}>
@@ -157,5 +177,5 @@ function AboutUs() {
     </div>
   );
 }
- 
+
 export default AboutUs;
