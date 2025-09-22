@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import PeopleZoneAccess from './pages/PeopleZoneAccess';
 import Zone from './pages/Zone'; 
 import HelpSupport from './pages/HelpSupport';
+import VisitorDetails from './pages/VisitorDetails';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/zone-access" element={<PeopleZoneAccess />} />
         <Route path="/zone" element={<Zone />} /> 
         <Route path="/help" element={<HelpSupport />} />
+        <Route path="/visitor-details" element={<VisitorDetails />} />
       </Routes>
     </Router>
   );

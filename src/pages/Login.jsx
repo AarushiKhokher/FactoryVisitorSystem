@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('admin');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
     if (username && password) {
       localStorage.setItem('username', username);
-      navigate('/dashboard');
+      localStorage.setItem('role', role);
+
+      if (role === 'admin') {
+        navigate('/dashboard');
+      } else {
+        navigate('/visitor-details');
+      }
     }
   };
 
@@ -31,7 +38,7 @@ function Login() {
           background-color: rgba(0, 0, 0, 0.4);
           color: #fff;
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
           position: fixed;
           top: 0;
@@ -40,8 +47,17 @@ function Login() {
         }
 
         .navbar h1 {
-          color: #fff;
           margin: 0;
+        }
+
+        .navbar a {
+          color: #64B5F6;
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        .navbar a:hover {
+          color: #42A5F5;
         }
 
         .page {
@@ -74,7 +90,8 @@ function Login() {
           margin-bottom: 20px;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
           width: 100%;
           padding: 14px;
           border: none;
@@ -89,7 +106,8 @@ function Login() {
           color: #555;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
           border-color: #64B5F6;
         }
 
@@ -130,6 +148,7 @@ function Login() {
 
       <div className="navbar">
         <h1>Factory Visitor System</h1>
+        <Link to="/register">Register</Link>
       </div>
 
       <div className="page">
@@ -154,10 +173,16 @@ function Login() {
                 required
               />
             </div>
+            <div className="form-group">
+              <select value={role} onChange={(e) => setRole(e.target.value)} required>
+                <option value="admin">Admin</option>
+                <option value="visitor">Visitor</option>
+              </select>
+            </div>
             <button type="submit" className="login-btn">Login</button>
           </form>
           <p className="register-link">
-            Don't have an account? <a href="/register">Register</a>
+            Don't have an account? <Link to="/register">Register</Link>
           </p>
         </div>
       </div>
@@ -166,6 +191,3 @@ function Login() {
 }
 
 export default Login;
-
-
-

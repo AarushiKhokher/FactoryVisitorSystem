@@ -27,14 +27,7 @@ function Settings() {
           margin: 0;
           padding: 0;
           font-family: 'Segoe UI', sans-serif;
-          background: linear-gradient(135deg, #cce5ff, #99ccff);
-          animation: shimmer 10s infinite linear;
-        }
-
-        @keyframes shimmer {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          background: linear-gradient(to bottom right, #e0f7fa, #f0f8ff);
         }
 
         .settings-container {
@@ -47,22 +40,21 @@ function Settings() {
 
         .settings-card {
           position: relative;
-          background: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.7);
           padding: 40px;
-          border-radius: 20px;
+          border-radius: 16px;
           backdrop-filter: blur(12px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
           max-width: 800px;
-          color: #333;
-          border: 2px solid rgba(255, 255, 255, 0.4);
+          color: #000;
         }
 
         .back-btn {
           position: absolute;
           top: 20px;
           right: 20px;
-          background-color: #00BFFF;
+          background-color: #64B5F6;
           color: #fff;
           border: none;
           padding: 10px 16px;
@@ -72,31 +64,32 @@ function Settings() {
           display: flex;
           align-items: center;
           gap: 8px;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
         .back-btn:hover {
-          background-color: #0099cc;
+          background-color: #42A5F5;
         }
 
         .settings-card h2 {
           font-size: 32px;
           margin-bottom: 10px;
           text-align: center;
-          color: #003366;
+          color: #000;
         }
 
         .settings-card p {
           font-size: 16px;
           text-align: center;
           margin-bottom: 30px;
+          color: #333;
         }
 
         .section-button {
           display: flex;
           align-items: center;
           gap: 10px;
-          background-color: #007BFF;
+          background-color: #64B5F6;
           color: #fff;
           padding: 12px 20px;
           border: none;
@@ -110,16 +103,16 @@ function Settings() {
         }
 
         .section-button:hover {
-          background-color: #0056b3;
+          background-color: #42A5F5;
           transform: scale(1.02);
         }
 
         .section-content {
           margin-bottom: 30px;
           padding: 20px;
-          background-color: rgba(255, 255, 255, 0.6);
+          background-color: rgba(255,255,255,0.6);
           border-radius: 12px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .form-group {
@@ -129,13 +122,24 @@ function Settings() {
         .form-group input {
           width: 100%;
           padding: 12px;
-          border: 1px solid #ccc;
-          border-radius: 8px;
+          border: none;
+          border-bottom: 2px solid #666;
+          background: transparent;
+          color: #000;
           font-size: 16px;
+          outline: none;
+        }
+
+        .form-group input::placeholder {
+          color: #555;
+        }
+
+        .form-group input:focus {
+          border-color: #64B5F6;
         }
 
         .update-btn {
-          background-color: #00BFFF;
+          background-color: #64B5F6;
           color: #fff;
           padding: 12px 20px;
           border: none;
@@ -146,7 +150,7 @@ function Settings() {
         }
 
         .update-btn:hover {
-          background-color: #0099cc;
+          background-color: #42A5F5;
         }
 
         @media (max-width: 600px) {
@@ -241,3 +245,4 @@ function Settings() {
 }
 
 export default Settings;
+
