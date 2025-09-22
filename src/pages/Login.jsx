@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('admin');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username && password) {
-      localStorage.setItem('username', username);
+    if (email && password) {
+      localStorage.setItem('email', email);
       localStorage.setItem('role', role);
 
       if (role === 'admin') {
         navigate('/dashboard');
       } else {
-        navigate('/visitor-details');
+        navigate('/guest-policy');
       }
     }
   };
@@ -31,35 +31,20 @@ function Login() {
           background: url('/image.png') no-repeat center center fixed;
           background-size: cover;
         }
-
         .navbar {
           width: 100%;
           padding: 15px 30px;
           background-color: rgba(0, 0, 0, 0.4);
           color: #fff;
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
           align-items: center;
           position: fixed;
           top: 0;
           left: 0;
           z-index: 1000;
         }
-
-        .navbar h1 {
-          margin: 0;
-        }
-
-        .navbar a {
-          color: #64B5F6;
-          text-decoration: none;
-          font-weight: 500;
-        }
-
-        .navbar a:hover {
-          color: #42A5F5;
-        }
-
+        .navbar h1 { margin: 0; }
         .page {
           min-height: 100vh;
           display: flex;
@@ -68,7 +53,6 @@ function Login() {
           align-items: center;
           padding-top: 100px;
         }
-
         .card {
           background: rgba(255, 255, 255, 0.7);
           padding: 40px 30px;
@@ -80,16 +64,11 @@ function Login() {
           color: #000;
           animation: fadeInUp 1s ease forwards;
         }
-
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-
-        .form-group {
-          margin-bottom: 20px;
-        }
-
+        .form-group { margin-bottom: 20px; }
         .form-group input,
         .form-group select {
           width: 100%;
@@ -101,16 +80,9 @@ function Login() {
           font-size: 16px;
           outline: none;
         }
-
-        .form-group input::placeholder {
-          color: #555;
-        }
-
+        .form-group input::placeholder { color: #555; }
         .form-group input:focus,
-        .form-group select:focus {
-          border-color: #64B5F6;
-        }
-
+        .form-group select:focus { border-color: #64B5F6; }
         .login-btn {
           width: 100%;
           padding: 14px;
@@ -123,32 +95,23 @@ function Login() {
           cursor: pointer;
           transition: background-color 0.3s ease;
         }
-
-        .login-btn:hover {
-          background-color: #42A5F5;
-        }
-
+        .login-btn:hover { background-color: #42A5F5; }
         .register-link {
           text-align: center;
           margin-top: 20px;
           font-size: 14px;
           color: #000;
         }
-
         .register-link a {
           color: #64B5F6;
           text-decoration: none;
           font-weight: 500;
         }
-
-        .register-link a:hover {
-          color: #42A5F5;
-        }
+        .register-link a:hover { color: #42A5F5; }
       `}</style>
 
       <div className="navbar">
         <h1>Factory Visitor System</h1>
-        <Link to="/register">Register</Link>
       </div>
 
       <div className="page">
@@ -157,10 +120,10 @@ function Login() {
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>

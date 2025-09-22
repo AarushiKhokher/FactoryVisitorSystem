@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
@@ -9,10 +8,11 @@ import Report from './pages/ViewReport';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PeopleZoneAccess from './pages/PeopleZoneAccess';
-import Zone from './pages/Zone'; 
+import Zone from './pages/Zone';
 import HelpSupport from './pages/HelpSupport';
+import GuestGuidelines from './pages/GuestGuidelines';
 import VisitorDetails from './pages/VisitorDetails';
-
+ 
 function App() {
   return (
     <Router>
@@ -25,14 +25,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/zone-access" element={<PeopleZoneAccess />} />
-        <Route path="/zone" element={<Zone />} /> 
+        <Route path="/zone" element={<Zone />} />
         <Route path="/help" element={<HelpSupport />} />
+        <Route path="/guest-policy" element={<GuestGuidelines />} />
         <Route path="/visitor-details" element={<VisitorDetails />} />
       </Routes>
     </Router>
   );
 }
-
+ 
 export default App;
 
+
+
+ 
 
