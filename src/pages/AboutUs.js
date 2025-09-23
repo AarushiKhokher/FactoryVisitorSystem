@@ -1,10 +1,14 @@
+
 import React, { useEffect, useState } from 'react';
+import { useTheme } from '../ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
 function AboutUs() {
+  const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
   const [fadeIn, setFadeIn] = useState(false);
   const [openSection, setOpenSection] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setFadeIn(true), 100);
@@ -17,48 +21,85 @@ function AboutUs() {
   const styles = {
     page: {
       fontFamily: 'Segoe UI, sans-serif',
-      backgroundColor: '#f0f8ff',
-      color: '#333',
-      padding: '40px',
+      backgroundColor: theme === 'light' ? '#f0f8ff' : '#232526',
+      backgroundImage: theme === 'light' ? 'url("/girl.png")' : 'url("/girl-dark.png")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      color: theme === 'light' ? '#333' : '#fff',
+      padding: '100px 40px 40px 40px',
       minHeight: '100vh',
       opacity: fadeIn ? 1 : 0,
       transform: fadeIn ? 'translateY(0)' : 'translateY(20px)',
-      transition: 'opacity 1s ease, transform 1s ease',
+      transition: 'opacity 1s ease, transform 1s ease, background 0.5s, color 0.5s',
       position: 'relative',
+    },
+    topRightControls: {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      gap: '10px',
+    },
+    dashboardButton: {
+      backgroundColor: '#00BFFF',
+      color: '#fff',
+      border: 'none',
+      padding: '10px 16px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+    },
+    toggleSwitch: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      color: theme === 'light' ? '#003366' : '#fff',
+    },
+    switchTrack: {
+      width: '40px',
+      height: '20px',
+      backgroundColor: '#ccc',
+      borderRadius: '20px',
+      position: 'relative',
+    },
+    switchThumb: {
+      position: 'absolute',
+      top: '2px',
+      left: theme === 'light' ? '2px' : '22px',
+      width: '16px',
+      height: '16px',
+      backgroundColor: '#fff',
+      borderRadius: '50%',
+      transition: 'left 0.3s',
     },
     header: {
       fontSize: '36px',
       fontWeight: 'bold',
       textAlign: 'center',
-      marginBottom: '20px',
-      color: '#1E3C72',
-    },
-    backButton: {
-      position: 'absolute',
-      top: '20px',
-      right: '20px',
-      backgroundColor: '#00BFFF',
-      color: '#fff',
-      border: 'none',
-      padding: '10px 16px',
-      borderRadius: '6px',
-      cursor: 'pointer',
-      fontWeight: 'bold',
-      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+      marginBottom: '30px',
+      color: theme === 'light' ? '#1E3C72' : '#00BFFF',
     },
     section: {
       marginBottom: '20px',
       maxWidth: '800px',
       margin: '0 auto',
-      borderBottom: '1px solid #ccc',
       paddingBottom: '10px',
     },
     title: {
       fontSize: '24px',
       fontWeight: 'bold',
       marginBottom: '10px',
-      color: '#00BFFF',
+      color: '#005A9C',
       cursor: 'pointer',
+      textAlign: 'left',
+      paddingLeft: '10px',
+      borderLeft: '4px solid #005A9C',
     },
     text: {
       fontSize: '16px',
@@ -79,19 +120,21 @@ function AboutUs() {
       marginTop: '20px',
     },
     teamCard: {
-      backgroundColor: '#fff',
+      backgroundColor: theme === 'light' ? '#fff' : '#333',
       padding: '20px',
       borderRadius: '8px',
       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
       width: '200px',
       textAlign: 'center',
-      transition: 'transform 0.3s ease',
+      transition: 'transform 0.3s ease, background 0.5s, color 0.5s',
+      color: theme === 'light' ? '#333' : '#fff',
     },
     contact: {
-      backgroundColor: '#e6f7ff',
+      backgroundColor: theme === 'light' ? '#e6f7ff' : '#444',
       padding: '20px',
       borderRadius: '8px',
       textAlign: 'center',
+      color: theme === 'light' ? '#333' : '#fff',
     },
   };
 
@@ -104,9 +147,18 @@ function AboutUs() {
 
   return (
     <div style={styles.page}>
-      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
-        ⬅ Back to Dashboard
-      </button>
+      {/* Top Right Controls */}
+      <div style={styles.topRightControls}>
+        <button style={styles.dashboardButton} onClick={() => navigate('/dashboard')}>
+          ⬅ Back to Dashboard
+        </button>
+        <div style={styles.toggleSwitch} onClick={toggleTheme}>
+          <span>{theme === 'light' ? <FaMoon /> : <FaSun />}</span>
+          <div style={styles.switchTrack}>
+            <div style={styles.switchThumb}></div>
+          </div>
+        </div>
+      </div>
 
       <div style={styles.header}>About Cognitrack</div>
 
@@ -179,3 +231,5 @@ function AboutUs() {
 }
 
 export default AboutUs;
+
+

@@ -53,3 +53,5 @@ function showLogoutPrompt() {
 }
  
 // Example usage: call this when logout button is clicked
+ 
+ 

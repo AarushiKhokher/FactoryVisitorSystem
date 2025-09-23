@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FaHome,
   FaInfoCircle,
@@ -20,7 +20,31 @@ function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [visitorRequestPopup, setVisitorRequestPopup] = useState(false);
+  const [visitorRequestData, setVisitorRequestData] = useState(null);
+  const [sessionDenied, setSessionDenied] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkVisitorUpdates = () => {
+      const visitorData = localStorage.getItem('latestVisitor');
+      if (visitorData) {
+        const parsed = JSON.parse(visitorData);
+        setVisitorRequestData(parsed);
+        setVisitorRequestPopup(true);
+      }
+
+      const deniedData = localStorage.getItem('sessionDenied');
+      if (deniedData) {
+        setSessionDenied(JSON.parse(deniedData));
+        localStorage.removeItem('sessionDenied');
+      }
+    };
+
+    checkVisitorUpdates();
+    const interval = setInterval(checkVisitorUpdates, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
 
@@ -77,7 +101,7 @@ function Dashboard() {
   const styles = {
     page: {
       minHeight: '100vh',
-      backgroundColor: theme === 'light' ? '#e6f7ff' : '#1e1e1e',
+      backgroundColor: theme === 'light' ? '#dcebf1ff' : '#1e1e1e',
       color: theme === 'light' ? '#000' : '#fff',
       fontFamily: 'Segoe UI, sans-serif',
       padding: '20px',
@@ -89,8 +113,8 @@ function Dashboard() {
       left: 0,
       height: '100vh',
       width: '240px',
-      backgroundColor: theme === 'light' ? '#b3e5fc' : '#2A5298',
-      color: theme === 'light' ? '#000' : '#fff',
+      backgroundColor: theme === 'light' ? '#bddef8ff' : '#000000',
+      color: theme === 'light' ? '#000000' : '#ffffff',
       padding: '30px 20px',
       boxShadow: '4px 0 12px rgba(0,0,0,0.2)',
       zIndex: 1000,
@@ -188,8 +212,9 @@ function Dashboard() {
   return (
     <div style={styles.page}>
       <div style={styles.sidebar}>
-        <h2 style={{ marginBottom: '30px', fontSize: '22px', color: '#fff' }}>Dashboard Menu</h2>
+        <h2 style={{ marginBottom: '30px', fontSize: '22px' }}>Dashboard Menu</h2>
         <div style={styles.dropdownItem} onClick={() => navigate('/')}>
+               
           <FaHome /> Home
         </div>
         <div style={styles.dropdownItem} onClick={() => navigate('/about')}>
@@ -215,7 +240,7 @@ function Dashboard() {
         </div>
       </div>
 
-            {showLogoutConfirm && (
+      {showLogoutConfirm && (
         <div style={styles.overlay}>
           <div style={styles.promptBox}>
             <p style={{ fontSize: '18px', marginBottom: '20px' }}>
@@ -242,21 +267,20 @@ function Dashboard() {
 
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
         <h1 style={styles.welcomeTitle}>Welcome to the Dashboard</h1>
-      <p style={styles.welcomeSubtitle}>
-  Monitor and manage visitor activity in real-time. Use the filters and search to find specific records.
-</p>
+        <p style={styles.welcomeSubtitle}>
+          Monitor and manage visitor activity in real-time. Use the filters and search to find specific records.
+        </p>
 
-<div style={{ height: '30px' }}></div> {/* Spacer */}
+        <div style={{ height: '30px' }}></div>
 
-<div style={{
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '15px',
-  flexWrap: 'wrap',
-  marginBottom: '40px',
-}}>
-
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '15px',
+          flexWrap: 'wrap',
+          marginBottom: '40px',
+        }}>
           <input
             type="text"
             placeholder="Search visitor..."
@@ -270,7 +294,6 @@ function Dashboard() {
           <button style={styles.button} onClick={exportCSV}>📤 Export CSV</button>
         </div>
 
-        {/* Visitor Table */}
         <table style={styles.table}>
           <thead>
             <tr>
@@ -299,10 +322,110 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
+
+      {visitorRequestPopup && visitorRequestData && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '30px',
+            borderRadius: '10px',
+            textAlign: 'center',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            maxWidth: '400px'
+          }}>
+            <h3>Visitor Request: {visitorRequestData?.name || 'Unknown Visitor'}</h3>
+            <p>ID Card Issued: {visitorRequestData?.issuedTime || 'Not available'}</p>
+            <button
+              onClick={() => {
+                alert(`Visitor ${visitorRequestData?.name || 'Unknown'} accepted`);
+                setVisitorRequestPopup(false);
+                localStorage.removeItem('latestVisitor');
+              }}
+              style={{
+                padding: '10px 20px',
+                marginRight: '10px',
+                backgroundColor: '#4CAF50',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              Accept
+            </button>
+            <button
+              onClick={() => {
+                alert(`Visitor ${visitorRequestData?.name || 'Unknown'} denied`);
+                setVisitorRequestPopup(false);
+                localStorage.removeItem('latestVisitor');
+              }}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#f44336',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              Deny
+            </button>
+          </div>
+        </div>
+      )}
+
+      {sessionDenied && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '30px',
+            borderRadius: '10px',
+            textAlign: 'center',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            maxWidth: '400px'
+          }}>
+            <h3>❌ Session Denied</h3>
+            <p><strong>Visitor Name:</strong> {sessionDenied.name || 'Unknown'}</p>
+            <p><strong>Visitor ID:</strong> {sessionDenied.id || 'Not available'}</p>
+            <p><strong>Time:</strong> {sessionDenied.time || 'Not recorded'}</p>
+            <button
+              onClick={() => setSessionDenied(null)}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#007acc',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                marginTop: '20px'
+              }}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Dashboard;
-
-

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -119,6 +120,8 @@ function VisitorDetails() {
   const [time, setTime] = useState('');
   const [authorizedBy, setAuthorizedBy] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [showSessionAlert, setShowSessionAlert] = useState(false); // ✅ NEW
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'Visitor';
   const barcodeRef = useRef(null);
@@ -128,6 +131,7 @@ function VisitorDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
+    localStorage.setItem('latestVisitor', JSON.stringify({ name: username, issuedTime }));
   };
 
   useEffect(() => {
@@ -139,10 +143,21 @@ function VisitorDetails() {
         height: 40,
         displayValue: true,
       });
+
+      // ✅ NEW: Trigger session expiry alert after 2 minutes
+      const timer = setTimeout(() => {
+        setShowSessionAlert(true);
+      }, 60000);
+
+      return () => clearTimeout(timer);
     }
   }, [submitted]);
 
   const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
     localStorage.clear();
     navigate('/login');
   };
@@ -226,7 +241,7 @@ function VisitorDetails() {
                   <option value="Aarushi">Aarushi</option>
                   <option value="Dolly">Dolly</option>
                   <option value="Pranali">Pranali</option>
-                  <option value="Abhinav">Abhinav</option>
+                                    <option value="Abhinav">Abhinav</option>
                 </select>
               </div>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} type="submit" style={styles.button}>
@@ -238,7 +253,7 @@ function VisitorDetails() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 }}
             style={styles.confirmation}
           >
             <h2 style={{ color: '#000', fontSize: '20px', marginBottom: '10px' }}>
@@ -257,7 +272,6 @@ function VisitorDetails() {
               alignItems: 'start',
               position: 'relative',
             }}>
-              {/* Top-left: Company Name */}
               <div style={{
                 position: 'absolute',
                 top: '10px',
@@ -269,7 +283,6 @@ function VisitorDetails() {
                 Cognitrack Pvt. Ltd.
               </div>
 
-              {/* Top-right: Issued Timestamp */}
               <div style={{
                 position: 'absolute',
                 top: '10px',
@@ -280,7 +293,6 @@ function VisitorDetails() {
                 Issued: {issuedTime}
               </div>
 
-              {/* Visitor Details */}
               <div style={{ paddingTop: '40px' }}>
                 <h3 style={{ ...styles.idTitle, marginBottom: '10px' }}>Visitor ID Card</h3>
                 <p><strong>Name:</strong> {username}</p>
@@ -290,7 +302,6 @@ function VisitorDetails() {
                 <p><strong>ID:</strong> {visitorId}</p>
               </div>
 
-              {/* Barcode */}
               <canvas ref={barcodeRef} style={{ height: '70px', marginTop: '40px' }}></canvas>
             </div>
 
@@ -301,13 +312,131 @@ function VisitorDetails() {
             </div>
           </motion.div>
         )}
+
+        {/* Logout Confirmation Modal */}
+        {showLogoutConfirm && (
+          <div style={{
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 999
+          }}>
+            <div style={{
+              backgroundColor: '#fff',
+              padding: '30px',
+              borderRadius: '10px',
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              maxWidth: '300px'
+            }}>
+              <h3 style={{ marginBottom: '20px', color: '#333' }}>Are you sure you want to logout?</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <button
+                  onClick={confirmLogout}
+                  style={{
+                    backgroundColor: '#4CAF50',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                  }}
+                >
+                  YES
+                </button>
+                <button
+                  onClick={() => setShowLogoutConfirm(false)}
+                  style={{
+                    backgroundColor: '#f44336',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                  }}
+                >
+                  NO
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ✅ Session Expiry Alert Modal */}
+        {showSessionAlert && (
+          <div style={{
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 999
+          }}>
+            <div style={{
+              backgroundColor: '#fff',
+              padding: '30px',
+              borderRadius: '10px',
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              maxWidth: '300px'
+            }}>
+              <h3 style={{ marginBottom: '20px', color: '#333' }}>
+                Session expiring. Do you want to continue?
+              </h3>
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <button
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate('/');
+                  }}
+                  style={{
+                    backgroundColor: '#4CAF50',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Accept
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.setItem('sessionDenied', JSON.stringify({
+                      name: username,
+                      time: new Date().toLocaleString()
+                    }));
+                    setShowSessionAlert(false);
+                    alert('Session denied. Admin will be notified.');
+                  }}
+                  style={{
+                    backgroundColor: '#f44336',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Deny
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
 }
 
 export default VisitorDetails;
-
-
 
 

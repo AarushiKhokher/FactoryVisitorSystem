@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaArrowLeft, FaMoon, FaSun } from 'react-icons/fa';
 
 function HelpSupport() {
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [openIndex, setOpenIndex] = useState(null);
+  const [isDark, setIsDark] = useState(false);
   const navigate = useNavigate();
 
   const faqs = [
@@ -33,203 +35,240 @@ function HelpSupport() {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const toggleTheme = () => {
+    document.body.classList.toggle('dark-theme');
+    setIsDark(!isDark);
+  };
+
   return (
-    <div style={styles.page}>
-      {/* ✅ Back to Dashboard Button */}
-      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
-        ⬅ Back to Dashboard
-      </button>
+    <>
+      <style>{`
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', sans-serif;
+          background: ${isDark ? '#000' : '#f0f8ff'};
+          color: ${isDark ? '#fff' : '#000'};
+          transition: background 0.5s ease, color 0.5s ease;
+        }
 
-      <h2 style={styles.title}>Help & Support</h2>
-      <p style={styles.subtitle}>Find answers or reach out for assistance.</p>
+        .help-container {
+          min-height: 100vh;
+          padding: 60px 20px;
+        }
 
-      {/* 📧 Support Email */}
-      <div style={styles.emailBox}>
-        <strong>Contact Support:</strong>{' '}
-        <a href="mailto:support@factoryvisitorsystem.com">support@factoryvisitorsystem.com</a>
-      </div>
+        .help-card {
+          position: relative;
+          background: ${isDark ? '#111' : 'rgba(255, 255, 255, 0.7)'};
+          padding: 40px;
+          border-radius: 16px;
+          backdrop-filter: blur(12px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          max-width: 800px;
+          margin: auto;
+          animation: fadeIn 0.6s ease;
+          color: inherit;
+        }
 
-      {/* 🔍 FAQ Search */}
-      <input
-        type="text"
-        placeholder="Search FAQs..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={styles.search}
-      />
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
 
-      {/* 📚 FAQ List */}
-      <div style={styles.faqSection}>
-        {filteredFaqs.length > 0 ? (
-          filteredFaqs.map((faq, index) => (
-            <div
-              key={index}
-              style={{
-                ...styles.faqItem,
-                backgroundColor: openIndex === index ? '#e6f7ff' : '#f9f9f9',
-              }}
-              onClick={() => toggleAnswer(index)}
-            >
-              <strong style={styles.question}>{faq.question}</strong>
-              {openIndex === index && <p style={styles.answer}>{faq.answer}</p>}
+        .back-btn {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background-color: #64B5F6;
+          color: #fff;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+          background-color: #42A5F5;
+        }
+
+        .theme-toggle {
+          position: absolute;
+          top: 70px;
+          right: 20px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          color: ${isDark ? '#fff' : '#333'};
+        }
+
+        .switch-track {
+          width: 40px;
+          height: 20px;
+          background-color: #ccc;
+          border-radius: 20px;
+          position: relative;
+        }
+
+        .switch-thumb {
+          position: absolute;
+          top: 2px;
+          left: ${isDark ? '22px' : '2px'};
+          width: 16px;
+          height: 16px;
+          background-color: #fff;
+          border-radius: 50%;
+          transition: left 0.3s;
+        }
+
+        .faq-item {
+          background-color: ${isDark ? '#222' : '#f9f9f9'};
+          padding: 15px;
+          border-radius: 8px;
+          margin-bottom: 15px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          cursor: pointer;
+          color: inherit;
+        }
+
+        .faq-item.open {
+          background-color: ${isDark ? '#333' : '#e6f7ff'};
+        }
+
+        .form-section {
+          background-color: ${isDark ? '#222' : '#fff'};
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          margin-top: 40px;
+          color: inherit;
+        }
+
+        .form-section input,
+        .form-section textarea {
+          width: 100%;
+          padding: 10px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          font-size: 14px;
+          margin-bottom: 15px;
+          background-color: ${isDark ? '#111' : '#fff'};
+          color: ${isDark ? '#fff' : '#000'};
+        }
+
+        .form-section button {
+          padding: 12px;
+          background-color: #00BFFF;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .form-section button:hover {
+          background-color: #009ACD;
+        }
+
+        a {
+          color: ${isDark ? '#4FC3F7' : '#1E3C72'};
+        }
+      `}</style>
+
+      <div className="help-container">
+        <div className="help-card">
+          {/* Back Button */}
+          <button className="back-btn" onClick={() => navigate('/dashboard')}>
+            <FaArrowLeft /> Back to Dashboard
+          </button>
+
+          {/* Theme Toggle Switch */}
+          <div className="theme-toggle" onClick={toggleTheme}>
+            {isDark ? <FaSun /> : <FaMoon />}
+            <div className="switch-track">
+              <div className="switch-thumb"></div>
             </div>
-          ))
-        ) : (
-          <p style={styles.noResult}>No matching FAQs found.</p>
-        )}
-      </div>
+          </div>
 
-      {/* 📝 Contact Form */}
-      <div style={styles.formSection}>
-        <h3 style={styles.formTitle}>Need more help?</h3>
-        <form onSubmit={handleSubmit} style={styles.form}>
+          <h2>Help & Support</h2>
+          <p>Find answers or reach out for assistance.</p>
+
+          <div>
+            <strong>Contact Support:</strong>{' '}
+            <a href="mailto:support@factoryvisitorsystem.com">support@factoryvisitorsystem.com</a>
+          </div>
+
           <input
             type="text"
-            name="name"
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            style={styles.input}
+            placeholder="Search FAQs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              margin: '20px 0',
+              padding: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              width: '100%',
+              backgroundColor: isDark ? '#111' : '#fff',
+              color: isDark ? '#fff' : '#000',
+            }}
           />
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            style={styles.input}
-          />
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-            style={styles.textarea}
-          />
-          <button type="submit" style={styles.button}>Submit</button>
-        </form>
+
+          {filteredFaqs.length > 0 ? (
+            filteredFaqs.map((faq, index) => (
+              <div
+                key={index}
+                className={`faq-item ${openIndex === index ? 'open' : ''}`}
+                onClick={() => toggleAnswer(index)}
+              >
+                <strong>{faq.question}</strong>
+                {openIndex === index && <p>{faq.answer}</p>}
+              </div>
+            ))
+          ) : (
+            <p>No matching FAQs found.</p>
+          )}
+
+          <div className="form-section">
+            <h3>Need more help?</h3>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <textarea
+                name="message"
+                placeholder="Your Message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                              />
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
-
-const styles = {
-  page: {
-    position: 'relative',
-    padding: '30px',
-    fontFamily: 'Segoe UI, sans-serif',
-    backgroundColor: '#f0f8ff',
-    minHeight: '100vh',
-  },
-  backButton: {
-    position: 'absolute',
-    top: '20px',
-    right: '20px',
-    backgroundColor: '#00BFFF',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 16px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-  },
-  title: {
-    fontSize: '32px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-    color: '#1E3C72',
-  },
-  subtitle: {
-    fontSize: '16px',
-    marginBottom: '20px',
-    color: '#555',
-  },
-  emailBox: {
-    backgroundColor: '#e6f7ff',
-    padding: '12px 20px',
-    borderRadius: '8px',
-    marginBottom: '30px',
-    fontSize: '16px',
-    color: '#1E3C72',
-  },
-  search: {
-    padding: '10px',
-    borderRadius: '6px',
-    border: '1px solid #ccc',
-    width: '100%',
-    maxWidth: '400px',
-    marginBottom: '20px',
-  },
-  faqSection: {
-    marginBottom: '40px',
-  },
-  faqItem: {
-    padding: '15px',
-    borderRadius: '8px',
-    marginBottom: '15px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-  },
-  question: {
-    fontSize: '16px',
-    color: '#333',
-  },
-  answer: {
-    marginTop: '10px',
-    fontSize: '14px',
-    color: '#555',
-  },
-  noResult: {
-    fontStyle: 'italic',
-    color: '#999',
-  },
-  formSection: {
-    backgroundColor: '#fff',
-    padding: '20px',
-    borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    maxWidth: '600px',
-    margin: '0 auto',
-  },
-  formTitle: {
-    fontSize: '24px',
-    fontWeight: '600',
-    marginBottom: '20px',
-    color: '#333',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-  },
-  input: {
-    padding: '10px',
-    borderRadius: '6px',
-    border: '1px solid #ccc',
-    fontSize: '14px',
-  },
-  textarea: {
-    padding: '10px',
-    borderRadius: '6px',
-    border: '1px solid #ccc',
-    fontSize: '14px',
-    minHeight: '100px',
-  },
-  button: {
-    padding: '12px',
-    backgroundColor: '#00BFFF',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '6px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-  },
-};
 
 export default HelpSupport;
 
