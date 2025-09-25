@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../ThemeContext';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ function AboutUs() {
   const navigate = useNavigate();
   const [fadeIn, setFadeIn] = useState(false);
   const [openSection, setOpenSection] = useState(null);
+  const role = localStorage.getItem('role'); // ✅ Get role from localStorage
 
   useEffect(() => {
     setTimeout(() => setFadeIn(true), 100);
@@ -149,14 +149,14 @@ function AboutUs() {
     <div style={styles.page}>
       {/* Top Right Controls */}
       <div style={styles.topRightControls}>
-        <button style={styles.dashboardButton} onClick={() => navigate('/dashboard')}>
-          ⬅ Back to Dashboard
-        </button>
+        {role === 'admin' && (
+          <button style={styles.dashboardButton} onClick={() => navigate('/dashboard')}>
+            ⬅ Back to Dashboard
+          </button>
+        )}
         <div style={styles.toggleSwitch} onClick={toggleTheme}>
-          <span>{theme === 'light' ? <FaMoon /> : <FaSun />}</span>
-          <div style={styles.switchTrack}>
-            <div style={styles.switchThumb}></div>
-          </div>
+          {theme === 'light' ? <FaMoon /> : <FaSun />}
+          {theme === 'light' ? 'Night Mode' : 'Light Mode'}
         </div>
       </div>
 
@@ -168,11 +168,9 @@ function AboutUs() {
           Our Mission
         </div>
         <div style={{ ...styles.text, ...(openSection === 'mission' ? styles.textOpen : {}) }}>
-          <p>
-            Cognitrack is designed to revolutionize factory visitor management by combining security,
-            efficiency, and smart technology. Our goal is to streamline entry processes, enhance safety,
-            and provide real-time insights into visitor activity.
-          </p>
+          Cognitrack is designed to revolutionize factory visitor management by combining security,
+          efficiency, and smart technology. Our goal is to streamline entry processes, enhance safety,
+          and provide real-time insights into visitor activity.
         </div>
       </div>
 
@@ -182,13 +180,11 @@ function AboutUs() {
           Key Features
         </div>
         <div style={{ ...styles.text, ...(openSection === 'features' ? styles.textOpen : {}) }}>
-          <ul>
-            <li>🔐 Secure digital check-in and check-out</li>
-            <li>📊 Real-time visitor analytics</li>
-            <li>📍 Location-aware access control</li>
-            <li>⚙️ Seamless integration with factory systems</li>
-            <li>🌐 Cloud-based data storage and reporting</li>
-          </ul>
+          🔐 Secure digital check-in and check-out<br />
+          📊 Real-time visitor analytics<br />
+          📍 Location-aware access control<br />
+          ⚙️ Seamless integration with factory systems<br />
+          🌐 Cloud-based data storage and reporting
         </div>
       </div>
 
@@ -206,8 +202,8 @@ function AboutUs() {
                 onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                <strong>{member.name}</strong>
-                <p>{member.role}</p>
+                <div>{member.name}</div>
+                <div>{member.role}</div>
               </div>
             ))}
           </div>
@@ -221,8 +217,8 @@ function AboutUs() {
         </div>
         <div style={{ ...styles.text, ...(openSection === 'contact' ? styles.textOpen : {}) }}>
           <div style={styles.contact}>
-            <p>Email: support@cognitrack.com</p>
-            <p>Location: Coimbatore, Tamil Nadu</p>
+            Email: support@cognitrack.com<br />
+            Location: Coimbatore, Tamil Nadu
           </div>
         </div>
       </div>
@@ -231,5 +227,3 @@ function AboutUs() {
 }
 
 export default AboutUs;
-
-

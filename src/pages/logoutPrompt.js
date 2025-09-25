@@ -8,7 +8,7 @@ function showLogoutPrompt() {
   overlay.style.left = '0';
   overlay.style.width = '100vw';
   overlay.style.height = '100vh';
-  overlay.style.backgroundColor = 'rgba(173, 216, 230, 0.9)'; // Light blue with transparency
+  overlay.style.backgroundColor = 'rgba(173, 216, 230, 0.9)'; 
   overlay.style.display = 'flex';
   overlay.style.justifyContent = 'center';
   overlay.style.alignItems = 'center';
@@ -52,6 +52,6 @@ function showLogoutPrompt() {
   document.body.appendChild(overlay);
 }
  
-// Example usage: call this when logout button is clicked
+
  
  

@@ -1,14 +1,12 @@
-
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { QRCodeCanvas } from 'qrcode.react';
 import { motion } from 'framer-motion';
-
+ 
 function Register() {
   const navigate = useNavigate();
   const isScanned = new URLSearchParams(window.location.search).get('scan') === 'true';
-
+ 
   const [visitorId] = useState(() => Math.floor(100000 + Math.random() * 900000).toString());
   const [fullName, setFullName] = useState('');
   const [contact, setContact] = useState('');
@@ -18,11 +16,11 @@ function Register() {
   const [identityFile, setIdentityFile] = useState(null);
   const [identityPreview, setIdentityPreview] = useState(null);
   const [showForm, setShowForm] = useState(isScanned);
-
+ 
   const qrMessage = "https://factory-visitor-system.vercel.app/register?scan=true";
-
+ 
   const handleManualTrigger = () => setShowForm(true);
-
+ 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setIdentityFile(file);
@@ -34,20 +32,21 @@ function Register() {
       setIdentityPreview(null);
     }
   };
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (fullName && contact && email && password && identityType && identityFile) {
-      localStorage.setItem('username', fullName); // ✅ Store full name
-      localStorage.setItem('email', email);
+      // ✅ Save visitor name and ID to localStorage
+      localStorage.setItem('visitorName', fullName);
       localStorage.setItem('visitorId', visitorId);
-      alert(`Registered: ${fullName} with Visitor ID: ${visitorId}`);
-      navigate('/login'); // ✅ Redirect to login page
+ 
+      alert(`Registered: ${fullName} with Visitor ID: ${visitorId}\nIdentity Proof: ${identityType}`);
+      navigate('/login');
     } else {
       alert('Please fill all fields and attach your identity proof.');
     }
   };
-
+ 
   return (
     <>
       <style>{`
@@ -85,6 +84,12 @@ function Register() {
           font-size: 16px;
           outline: none;
         }
+        .form-group input::placeholder {
+          color: #555;
+        }
+        .form-group input:focus, .form-group select:focus {
+          border-color: #00BFFF;
+        }
         .register-btn {
           width: 100%;
           padding: 14px;
@@ -95,6 +100,17 @@ function Register() {
           font-weight: bold;
           font-size: 16px;
           cursor: pointer;
+        }
+        .login-link {
+          text-align: center;
+          margin-top: 20px;
+          font-size: 14px;
+          color: #000;
+        }
+        .login-link a {
+          color: #00BFFF;
+          text-decoration: none;
+          font-weight: 500;
         }
         .scan-btn {
           background-color: transparent;
@@ -113,21 +129,22 @@ function Register() {
           border-radius: 6px;
           border: 1px solid #ccc;
         }
+        .identity-label {
+          font-size: 14px;
+          margin-bottom: 6px;
+          color: #333;
+          font-weight: 500;
+        }
       `}</style>
-
-      <motion.div
-        className="card"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
+ 
+      <motion.div className="card" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
         <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Visitor Registration</h2>
-
+ 
         {!showForm ? (
           <div style={{ textAlign: 'center', marginBottom: '30px' }}>
             <QRCodeCanvas value={qrMessage} size={200} />
             <p style={{ fontSize: '12px', color: '#333' }}>
-              Scan this QR code using your mobile to open the full registration form.
+              Scan this QR code using your mobile. It will open this page and show the full registration form.
             </p>
             <button className="scan-btn" onClick={handleManualTrigger}>Manual Registration</button>
           </div>
@@ -149,6 +166,7 @@ function Register() {
               <input type="text" value={visitorId} readOnly />
             </div>
             <div className="form-group">
+              <label className="identity-label">Attach Identity Proof (Aadhaar, PAN, Voter ID):</label>
               <select value={identityType} onChange={e => setIdentityType(e.target.value)} required>
                 <option value="">Select Identity Type</option>
                 <option value="Aadhaar Card">Aadhaar Card</option>
@@ -163,13 +181,11 @@ function Register() {
             <button type="submit" className="register-btn">Register</button>
           </form>
         )}
-
-        <p style={{ textAlign: 'center', marginTop: '20px' }}>
-          Already registered? <Link to="/login">Login</Link>
-        </p>
+ 
+        <p className="login-link">Already registered? <Link to="/login">Login</Link></p>
       </motion.div>
     </>
   );
 }
-
+ 
 export default Register;

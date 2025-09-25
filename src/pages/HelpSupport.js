@@ -8,6 +8,7 @@ function HelpSupport() {
   const [openIndex, setOpenIndex] = useState(null);
   const [isDark, setIsDark] = useState(false);
   const navigate = useNavigate();
+  const role = localStorage.getItem('role');
 
   const faqs = [
     { question: 'How do I register a visitor?', answer: 'Go to the Register page and fill out the visitor details.' },
@@ -41,232 +42,207 @@ function HelpSupport() {
   };
 
   return (
-    <>
-      <style>{`
-        body {
-          margin: 0;
-          padding: 0;
-          font-family: 'Segoe UI', sans-serif;
-          background: ${isDark ? '#000' : '#f0f8ff'};
-          color: ${isDark ? '#fff' : '#000'};
-          transition: background 0.5s ease, color 0.5s ease;
-        }
-
-        .help-container {
-          min-height: 100vh;
-          padding: 60px 20px;
-        }
-
-        .help-card {
-          position: relative;
-          background: ${isDark ? '#111' : 'rgba(255, 255, 255, 0.7)'};
-          padding: 40px;
-          border-radius: 16px;
-          backdrop-filter: blur(12px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-          max-width: 800px;
-          margin: auto;
-          animation: fadeIn 0.6s ease;
-          color: inherit;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .back-btn {
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          background-color: #64B5F6;
-          color: #fff;
-          border: none;
-          padding: 10px 16px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .back-btn:hover {
-          background-color: #42A5F5;
-        }
-
-        .theme-toggle {
-          position: absolute;
-          top: 70px;
-          right: 20px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-          font-weight: bold;
-          color: ${isDark ? '#fff' : '#333'};
-        }
-
-        .switch-track {
-          width: 40px;
-          height: 20px;
-          background-color: #ccc;
-          border-radius: 20px;
-          position: relative;
-        }
-
-        .switch-thumb {
-          position: absolute;
-          top: 2px;
-          left: ${isDark ? '22px' : '2px'};
-          width: 16px;
-          height: 16px;
-          background-color: #fff;
-          border-radius: 50%;
-          transition: left 0.3s;
-        }
-
-        .faq-item {
-          background-color: ${isDark ? '#222' : '#f9f9f9'};
-          padding: 15px;
-          border-radius: 8px;
-          margin-bottom: 15px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          cursor: pointer;
-          color: inherit;
-        }
-
-        .faq-item.open {
-          background-color: ${isDark ? '#333' : '#e6f7ff'};
-        }
-
-        .form-section {
-          background-color: ${isDark ? '#222' : '#fff'};
-          padding: 20px;
-          border-radius: 12px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-          margin-top: 40px;
-          color: inherit;
-        }
-
-        .form-section input,
-        .form-section textarea {
-          width: 100%;
-          padding: 10px;
-          border-radius: 6px;
-          border: 1px solid #ccc;
-          font-size: 14px;
-          margin-bottom: 15px;
-          background-color: ${isDark ? '#111' : '#fff'};
-          color: ${isDark ? '#fff' : '#000'};
-        }
-
-        .form-section button {
-          padding: 12px;
-          background-color: #00BFFF;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          font-weight: bold;
-          cursor: pointer;
-        }
-
-        .form-section button:hover {
-          background-color: #009ACD;
-        }
-
-        a {
-          color: ${isDark ? '#4FC3F7' : '#1E3C72'};
-        }
-      `}</style>
-
-      <div className="help-container">
-        <div className="help-card">
-          {/* Back Button */}
-          <button className="back-btn" onClick={() => navigate('/dashboard')}>
-            <FaArrowLeft /> Back to Dashboard
-          </button>
-
-          {/* Theme Toggle Switch */}
-          <div className="theme-toggle" onClick={toggleTheme}>
-            {isDark ? <FaSun /> : <FaMoon />}
-            <div className="switch-track">
-              <div className="switch-thumb"></div>
-            </div>
-          </div>
-
-          <h2>Help & Support</h2>
-          <p>Find answers or reach out for assistance.</p>
-
-          <div>
-            <strong>Contact Support:</strong>{' '}
-            <a href="mailto:support@factoryvisitorsystem.com">support@factoryvisitorsystem.com</a>
-          </div>
-
-          <input
-            type="text"
-            placeholder="Search FAQs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+    <div
+      style={{
+        fontFamily: 'Segoe UI, sans-serif',
+        padding: '40px',
+        backgroundColor: isDark ? '#1a1a1a' : '#f9f9f9',
+        color: isDark ? '#fff' : '#000',
+        minHeight: '100vh',
+        transition: 'all 0.3s ease',
+        position: 'relative',
+      }}
+    >
+      {/* Top Right Controls */}
+      <div style={{
+        position: 'absolute',
+        top: '20px',
+        right: '30px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: '10px'
+      }}>
+        {role === 'admin' && (
+          <button
+            onClick={() => navigate('/dashboard')}
             style={{
-              margin: '20px 0',
-              padding: '10px',
+              backgroundColor: '#00BFFF',
+              color: '#fff',
+              border: 'none',
+              padding: '10px 16px',
               borderRadius: '6px',
-              border: '1px solid #ccc',
-              width: '100%',
-              backgroundColor: isDark ? '#111' : '#fff',
-              color: isDark ? '#fff' : '#000',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
             }}
-          />
+          >
+            <FaArrowLeft size={14} /> Back to Dashboard
+          </button>
+        )}
 
-          {filteredFaqs.length > 0 ? (
-            filteredFaqs.map((faq, index) => (
-              <div
-                key={index}
-                className={`faq-item ${openIndex === index ? 'open' : ''}`}
-                onClick={() => toggleAnswer(index)}
-              >
-                <strong>{faq.question}</strong>
-                {openIndex === index && <p>{faq.answer}</p>}
-              </div>
-            ))
-          ) : (
-            <p>No matching FAQs found.</p>
-          )}
-
-          <div className="form-section">
-            <h3>Need more help?</h3>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                              />
-              <button type="submit">Submit</button>
-            </form>
+        {/* 🌗 Icon + Toggle Switch */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {isDark ? <FaSun size={14} color="#FFD700" /> : <FaMoon size={14} color="#0077b6" />}
+          <div
+            onClick={toggleTheme}
+            style={{
+              width: '40px',
+              height: '20px',
+              backgroundColor: isDark ? '#f0f0f0' : '#333',
+              borderRadius: '20px',
+              position: 'relative',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: isDark ? 'flex-end' : 'flex-start',
+              padding: '3px',
+              transition: 'background 0.3s ease'
+            }}
+          >
+            <div style={{
+              width: '14px',
+              height: '14px',
+              borderRadius: '50%',
+              backgroundColor: isDark ? '#333' : '#f0f0f0',
+              transition: 'all 0.3s ease'
+            }} />
           </div>
         </div>
       </div>
-    </>
+
+      <h2 style={{ marginTop: '80px' }}>Help & Support</h2>
+      <p>Find answers or reach out for assistance.</p>
+      <p>
+        Contact Support:{' '}
+        <a href="mailto:support@factoryvisitorsystem.com" style={{ color: '#00BFFF' }}>
+          support@factoryvisitorsystem.com
+        </a>
+      </p>
+
+      {/* 🔍 Search FAQs */}
+      <input
+        type="text"
+        placeholder="Search FAQs..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{
+          margin: '20px 0',
+          padding: '10px',
+          borderRadius: '6px',
+          border: '1px solid #ccc',
+          width: '100%',
+          backgroundColor: isDark ? '#111' : '#fff',
+          color: isDark ? '#fff' : '#000',
+        }}
+      />
+
+      {/* 📋 FAQ List */}
+      {filteredFaqs.length > 0 ? (
+        filteredFaqs.map((faq, index) => (
+          <div key={index} style={{ marginBottom: '10px' }}>
+            <div
+              onClick={() => toggleAnswer(index)}
+              style={{
+                cursor: 'pointer',
+                backgroundColor: isDark ? '#333' : '#e6f7ff',
+                padding: '10px',
+                borderRadius: '6px',
+                fontWeight: 'bold'
+              }}
+            >
+              {faq.question}
+            </div>
+            {openIndex === index && (
+              <div
+                style={{
+                  backgroundColor: isDark ? '#222' : '#f0f0f0',
+                  padding: '10px',
+                  borderRadius: '6px',
+                  marginTop: '5px'
+                }}
+              >
+                {faq.answer}
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <p>No matching FAQs found.</p>
+      )}
+
+      {/* 📩 Contact Form */}
+      <h3 style={{ marginTop: '40px' }}>Need more help?</h3>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          style={{
+            width: '100%',
+            padding: '10px',
+            marginBottom: '10px',
+            borderRadius: '6px',
+            border: '1px solid #ccc',
+            backgroundColor: isDark ? '#111' : '#fff',
+            color: isDark ? '#fff' : '#000',
+          }}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          style={{
+            width: '100%',
+            padding: '10px',
+            marginBottom: '10px',
+            borderRadius: '6px',
+            border: '1px solid #ccc',
+            backgroundColor: isDark ? '#111' : '#fff',
+            color: isDark ? '#fff' : '#000',
+          }}
+        />
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          style={{
+            width: '100%',
+            padding: '10px',
+            marginBottom: '10px',
+            borderRadius: '6px',
+            border: '1px solid #ccc',
+            backgroundColor: isDark ? '#111' : '#fff',
+            color: isDark ? '#fff' : '#000',
+            minHeight: '100px'
+          }}
+        />
+        <button
+          type="submit"
+          style={{
+            backgroundColor: '#00BFFF',
+            color: '#fff',
+            border: 'none',
+            padding: '12px 20px',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            cursor: 'pointer'
+          }}
+        >
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
 

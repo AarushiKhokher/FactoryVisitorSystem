@@ -1,224 +1,24 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { zoneList } from './ZoneData';
-
-// function Zone() {
-//   const [people, setPeople] = useState([
-//     { name: 'John Doe', zones: [1, 4, 9] },
-//     { name: 'Jane Smith', zones: [2, 5] },
-//     { name: 'Ravi Kumar', zones: [3, 6] },
-//     { name: 'Priya Sharma', zones: [1, 7, 10] },
-//   ]);
-
-//   const navigate = useNavigate();
-
-//   const activeZones = (zoneList || []).filter(z => z.active);
-//   const inactiveZones = (zoneList || []).filter(z => !z.active);
-
-//   const toggleZoneAccess = (personIndex, zoneId) => {
-//     const updated = [...people];
-//     const currentZones = updated[personIndex].zones;
-//     if (currentZones.includes(zoneId)) {
-//       updated[personIndex].zones = currentZones.filter(id => id !== zoneId);
-//     } else {
-//       updated[personIndex].zones.push(zoneId);
-//     }
-//     setPeople(updated);
-//   };
-
-//   const styles = {
-//     page: {
-//       position: 'relative',
-//       padding: '30px',
-//       fontFamily: 'Segoe UI, sans-serif',
-//       backgroundColor: '#f4f8fb',
-//       minHeight: '100vh',
-//       color: '#333',
-//     },
-//     backButton: {
-//       position: 'absolute',
-//       top: '20px',
-//       right: '20px',
-//       backgroundColor: '#00BFFF',
-//       color: '#fff',
-//       border: 'none',
-//       padding: '10px 16px',
-//       borderRadius: '8px',
-//       cursor: 'pointer',
-//       fontWeight: 'bold',
-//       boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-//     },
-//     title: {
-//       fontSize: '32px',
-//       fontWeight: 'bold',
-//       marginBottom: '10px',
-//       color: '#1E3C72',
-//     },
-//     subtitle: {
-//       fontSize: '16px',
-//       marginBottom: '30px',
-//       color: '#555',
-//     },
-//     sectionTitle: {
-//       fontSize: '22px',
-//       fontWeight: '600',
-//       marginBottom: '15px',
-//       color: '#333',
-//     },
-//     zoneOverview: {
-//       marginBottom: '40px',
-//       display: 'flex',
-//       gap: '40px',
-//       justifyContent: 'center',
-//     },
-//     zoneColumn: {
-//       flex: 1,
-//       minWidth: '200px',
-//     },
-//     list: {
-//       listStyle: 'none',
-//       padding: 0,
-//     },
-//     item: {
-//       fontSize: '18px',
-//       marginBottom: '12px',
-//       color: '#333',
-//     },
-//     accessSection: {
-//       marginTop: '20px',
-//     },
-//     card: {
-//       backgroundColor: '#fff',
-//       borderRadius: '12px',
-//       padding: '20px',
-//       marginBottom: '20px',
-//       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-//       color: '#333',
-//     },
-//     personName: {
-//       fontSize: '20px',
-//       fontWeight: '600',
-//       marginBottom: '15px',
-//       color: '#333',
-//     },
-//     zoneGrid: {
-//       display: 'flex',
-//       gap: '40px',
-//       flexWrap: 'wrap',
-//       justifyContent: 'space-between',
-//     },
-//     zoneSubGrid: {
-//       flex: 1,
-//       minWidth: '200px',
-//     },
-//     zoneItem: {
-//       fontSize: '14px',
-//       color: '#444',
-//       marginBottom: '8px',
-//     },
-//   };
-
-//   return (
-//     <div style={styles.page}>
-//       {/* ✅ Back to Dashboard Button */}
-//       <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
-//         ⬅ Back to Dashboard
-//       </button>
-
-//       <h2 style={styles.title}>Factory Zones &amp; Access Control</h2>
-//       <p style={styles.subtitle}>View zones and assign access to personnel.</p>
-
-//       <div style={styles.zoneOverview}>
-//         <div style={styles.zoneColumn}>
-//           <h3 style={styles.sectionTitle}>Active Zones</h3>
-//           <ul style={styles.list}>
-//             {activeZones.map(zone => (
-//               <li key={zone.id} style={styles.item}>
-//                 <strong>{zone.name}</strong> — 🟢 Active
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//         <div style={styles.zoneColumn}>
-//           <h3 style={styles.sectionTitle}>Inactive Zones</h3>
-//           <ul style={styles.list}>
-//             {inactiveZones.map(zone => (
-//               <li key={zone.id} style={styles.item}>
-//                 <strong>{zone.name}</strong> — 🔴 Inactive
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       </div>
-
-//       <div style={styles.accessSection}>
-//         <h3 style={styles.sectionTitle}>Assign Zone Access</h3>
-//         {people.map((person, index) => (
-//           <div key={index} style={styles.card}>
-//             <h4 style={styles.personName}>{person.name}</h4>
-//             <div style={styles.zoneGrid}>
-//               <div style={styles.zoneSubGrid}>
-//                 <strong>Active Zones</strong>
-//                 {activeZones.map(zone => (
-//                   <div key={zone.id} style={styles.zoneItem}>
-//                     <label>
-//                       <input
-//                         type="checkbox"
-//                         checked={person.zones.includes(zone.id)}
-//                         onChange={() => toggleZoneAccess(index, zone.id)}
-//                         disabled={!zone.active}
-//                       />
-//                       {zone.name}
-//                     </label>
-//                   </div>
-//                 ))}
-//               </div>
-//               <div style={styles.zoneSubGrid}>
-//                 <strong>Inactive Zones</strong>
-//                 {inactiveZones.map(zone => (
-//                   <div key={zone.id} style={styles.zoneItem}>
-//                     <label>
-//                       <input
-//                         type="checkbox"
-//                         checked={person.zones.includes(zone.id)}
-//                         onChange={() => toggleZoneAccess(index, zone.id)}
-//                         disabled={!zone.active}
-//                       />
-//                       {zone.name}
-//                     </label>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Zone;
-
-
-
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { zoneList } from './ZoneData';
-import { useTheme } from '../ThemeContext';
-import { FaMoon, FaSun } from 'react-icons/fa';
- 
+import * as XLSX from 'xlsx';
+
 function Zone() {
-  const { theme, toggleTheme } = useTheme();
   const [people, setPeople] = useState([
     { name: 'John Doe', zones: [1, 4, 9] },
     { name: 'Jane Smith', zones: [2, 5] },
     { name: 'Ravi Kumar', zones: [3, 6] },
     { name: 'Priya Sharma', zones: [1, 7, 10] },
   ]);
- 
+
+  const [expandedPerson, setExpandedPerson] = useState(null);
+  const [isNightMode, setIsNightMode] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
   const activeZones = (zoneList || []).filter(z => z.active);
   const inactiveZones = (zoneList || []).filter(z => !z.active);
- 
+
   const toggleZoneAccess = (personIndex, zoneId) => {
     const updated = [...people];
     const currentZones = updated[personIndex].zones;
@@ -229,16 +29,31 @@ function Zone() {
     }
     setPeople(updated);
   };
- 
+
+  const exportToCSV = () => {
+    const data = people.map(person => ({
+      Name: person.name,
+      Zones: person.zones.join(', '),
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Zone Access');
+    XLSX.writeFile(workbook, 'Zone_Access_Report.csv');
+  };
+
+  const filteredPeople = people.filter(person =>
+    person.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const styles = {
     page: {
-      padding: '30px',
-      fontFamily: 'Segoe UI, sans-serif',
-      backgroundColor: theme === 'light' ? '#f4f8fb' : '#232526',
+      padding: '40px',
+      fontFamily: 'Inter, sans-serif',
+      backgroundColor: isNightMode ? '#0f172a' : '#dbeafe',
       minHeight: '100vh',
-      color: theme === 'light' ? '#333' : '#fff',
-      transition: 'background 0.5s, color 0.5s',
+      color: isNightMode ? '#f8fafc' : '#1e293b',
       position: 'relative',
+      transition: 'all 0.3s ease',
     },
     topRightControls: {
       position: 'absolute',
@@ -249,205 +64,234 @@ function Zone() {
       alignItems: 'flex-end',
       gap: '10px',
     },
-    dashboardButton: {
-      padding: '8px 16px',
-      backgroundColor: theme === 'light' ? '#1E3C72' : '#00BFFF',
+    button: {
+      backgroundColor: '#0ea5e9',
       color: '#fff',
       border: 'none',
-      borderRadius: '6px',
+      padding: '10px 16px',
+      borderRadius: '8px',
       cursor: 'pointer',
-      fontWeight: 'bold',
-      transition: 'background 0.3s',
+      fontWeight: '600',
     },
-    toggleSwitch: {
+    toggleWrapper: {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
       cursor: 'pointer',
-      fontWeight: 'bold',
-      color: theme === 'light' ? '#003366' : '#fff',
     },
-    switchTrack: {
+    toggleTrack: {
       width: '40px',
       height: '20px',
       backgroundColor: '#ccc',
       borderRadius: '20px',
       position: 'relative',
     },
-    switchThumb: {
+    toggleThumb: {
       position: 'absolute',
       top: '2px',
-      left: theme === 'light' ? '2px' : '22px',
+      left: isNightMode ? '22px' : '2px',
       width: '16px',
       height: '16px',
-      backgroundColor: '#fff',
+      backgroundColor: isNightMode ? '#38bdf8' : '#fff',
       borderRadius: '50%',
-      transition: 'left 0.3s',
+      transition: 'left 0.3s ease',
+    },
+    header: {
+      textAlign: 'center',
+      marginBottom: '30px',
     },
     title: {
-      fontSize: '32px',
-      fontWeight: 'bold',
-      marginBottom: '10px',
-      color: theme === 'light' ? '#1E3C72' : '#00BFFF',
+      fontSize: '36px',
+      fontWeight: '700',
+      color: '#0ea5e9',
     },
     subtitle: {
-      fontSize: '16px',
+      fontSize: '18px',
+      color: isNightMode ? '#cbd5e1' : '#475569',
+      marginTop: '10px',
+    },
+    searchBar: {
       marginBottom: '30px',
-      color: theme === 'light' ? '#555' : '#ccc',
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '10px',
+      flexWrap: 'wrap',
+    },
+    searchInput: {
+      padding: '10px',
+      borderRadius: '8px',
+      border: '1px solid #ccc',
+      width: '300px',
+      backgroundColor: isNightMode ? '#334155' : '#fff',
+      color: isNightMode ? '#f8fafc' : '#1e293b',
+    },
+    zoneStatus: {
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '40px',
+      marginBottom: '40px',
+      flexWrap: 'wrap',
+    },
+    zoneBox: {
+      flex: '1 1 300px',
+      backgroundColor: isNightMode ? '#1e293b' : '#ffffff',
+      padding: '20px',
+      borderRadius: '12px',
+      boxShadow: '0 6px 16px rgba(0,0,0,0.1)',
+      color: isNightMode ? '#f8fafc' : '#1e293b',
+      transition: 'all 0.3s ease',
     },
     sectionTitle: {
       fontSize: '22px',
       fontWeight: '600',
       marginBottom: '15px',
-      color: theme === 'light' ? '#333' : '#fff',
-    },
-    zoneOverview: {
-      marginBottom: '40px',
-      display: 'flex',
-      gap: '40px',
-      justifyContent: 'center',
-    },
-    zoneColumn: {
-      flex: 1,
-      minWidth: '200px',
-    },
-    list: {
-      listStyle: 'none',
-      padding: 0,
+      textAlign: 'center',
+      color: isNightMode ? '#38bdf8' : '#0ea5e9',
     },
     item: {
-      fontSize: '18px',
-      marginBottom: '12px',
-      color: theme === 'light' ? '#333' : '#fff',
-    },
-    accessSection: {
-      marginTop: '20px',
+      fontSize: '16px',
+      marginBottom: '10px',
+      textAlign: 'center',
     },
     card: {
-      backgroundColor: theme === 'light' ? '#fff' : '#333',
+      backgroundColor: isNightMode ? '#1e293b' : '#ffffff',
       borderRadius: '12px',
-      padding: '20px',
-      marginBottom: '20px',
+      padding: '15px',
+      marginBottom: '15px',
       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      color: theme === 'light' ? '#333' : '#fff',
-      transition: 'background 0.5s, color 0.5s',
+      cursor: 'pointer',
+      color: isNightMode ? '#f8fafc' : '#1e293b',
+      transition: 'all 0.3s ease',
     },
     personName: {
-      fontSize: '20px',
+      fontSize: '18px',
       fontWeight: '600',
-      marginBottom: '15px',
-      color: theme === 'light' ? '#333' : '#fff',
+      color: isNightMode ? '#38bdf8' : '#0ea5e9',
+      textAlign: 'center',
     },
-    zoneGrid: {
-      display: 'flex',
-      gap: '40px',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-    },
-    zoneSubGrid: {
-      flex: 1,
-      minWidth: '200px',
+    zoneList: {
+      marginTop: '10px',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: '10px',
     },
     zoneItem: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: isNightMode ? '#334155' : '#f1f5f9',
+      padding: '8px 12px',
+      borderRadius: '8px',
       fontSize: '14px',
-      color: theme === 'light' ? '#444' : '#ccc',
-      marginBottom: '8px',
+      color: isNightMode ? '#f8fafc' : '#1e293b',
     },
+    toggle: {
+      width: '40px',
+      height: '20px',
+      borderRadius: '20px',
+      position: 'relative',
+    },
+    knob: (active) => ({
+      position: 'absolute',
+      top: '2px',
+      left: active ? '22px' : '2px',
+      width: '16px',
+      height: '16px',
+      borderRadius: '50%',
+      backgroundColor: active ? '#0ea5e9' : '#fff',
+      transition: 'left 0.3s ease',
+    }),
   };
- 
+
   return (
     <div style={styles.page}>
-      {/* Top Right Controls */}
       <div style={styles.topRightControls}>
-        <button
-          style={styles.dashboardButton}
-          onClick={() => window.location.href = '/dashboard'} // Adjust route as needed
-        >
-          Back to Dashboard
+        <button style={styles.button} onClick={() => navigate('/dashboard')}>
+          ⬅ Back to Dashboard
         </button>
-        <div style={styles.toggleSwitch} onClick={toggleTheme}>
-          <span>{theme === 'light' ? <FaMoon /> : <FaSun />}</span>
-          <div style={styles.switchTrack}>
-            <div style={styles.switchThumb}></div>
+        <div style={styles.toggleWrapper} onClick={() => setIsNightMode(!isNightMode)}>
+          {isNightMode ? '☀️' : '🌙'}
+          <div style={styles.toggleTrack}>
+            <div style={styles.toggleThumb}></div>
           </div>
         </div>
       </div>
- 
-      <h2 style={styles.title}>Factory Zones & Access Control</h2>
-      <p style={styles.subtitle}>View zones and assign access to personnel.</p>
- 
-      {/* Zone Overview */}
-      <div style={styles.zoneOverview}>
-        <div style={styles.zoneColumn}>
-          <h3 style={styles.sectionTitle}>Active Zones</h3>
-          <ul style={styles.list}>
-            {activeZones.map(zone => (
-              <li key={zone.id} style={styles.item}>
-                <strong>{zone.name}</strong> — 🟢 Active
-              </li>
-            ))}
-          </ul>
+
+      <div style={styles.header}>
+        <h2 style={styles.title}>🏭 Zone Access Management</h2>
+        <p style={styles.subtitle}>Tap on a person to manage their zone access.</p>
+      </div>
+
+      <div style={styles.searchBar}>
+        <input
+          type="text"
+          placeholder="Search visitor..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={styles.searchInput}
+        />
+        <button style={styles.button} onClick={exportToCSV}>
+          📥 Export CSV
+        </button>
+      </div>
+
+      <div style={styles.zoneStatus}>
+        <div style={styles.zoneBox}>
+          <h3 style={styles.sectionTitle}>🟢 Active Zones</h3>
+          {activeZones.map(zone => (
+            <div key={zone.id} style={styles.item}>{zone.name}</div>
+          ))}
         </div>
-        <div style={styles.zoneColumn}>
-          <h3 style={styles.sectionTitle}>Inactive Zones</h3>
-          <ul style={styles.list}>
-            {inactiveZones.map(zone => (
-              <li key={zone.id} style={styles.item}>
-                <strong>{zone.name}</strong> — 🔴 Inactive
-              </li>
-            ))}
-          </ul>
+                <div style={styles.zoneBox}>
+          <h3 style={styles.sectionTitle}>🔴 Inactive Zones</h3>
+          {inactiveZones.map(zone => (
+            <div key={zone.id} style={styles.item}>{zone.name}</div>
+          ))}
         </div>
       </div>
- 
-      {/* Access Assignment */}
-      <div style={styles.accessSection}>
-        <h3 style={styles.sectionTitle}>Assign Zone Access</h3>
-        {people.map((person, index) => (
-          <div key={index} style={styles.card}>
-            <h4 style={styles.personName}>{person.name}</h4>
-            <div style={styles.zoneGrid}>
-              {/* Active zones */}
-              <div style={styles.zoneSubGrid}>
-                <strong>Active Zones</strong>
-                {activeZones.map(zone => (
+
+      {/* People Cards */}
+      {filteredPeople.map((person, index) => (
+        <div
+          key={index}
+          style={styles.card}
+          onClick={() => setExpandedPerson(expandedPerson === index ? null : index)}
+        >
+          <div style={styles.personName}>{person.name}</div>
+          {expandedPerson === index && (
+            <div style={styles.zoneList}>
+              {[...activeZones, ...inactiveZones].map(zone => {
+                const hasAccess = person.zones.includes(zone.id);
+                return (
                   <div key={zone.id} style={styles.zoneItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={person.zones.includes(zone.id)}
-                        onChange={() => toggleZoneAccess(index, zone.id)}
-                        disabled={!zone.active}
-                      />
-                      {zone.name}
-                    </label>
+                    <span>
+                      {zone.name} ({zone.active ? 'Active' : 'Inactive'})
+                    </span>
+                    <div
+                      style={{
+                        ...styles.toggle,
+                        backgroundColor: zone.active
+                          ? hasAccess ? '#0ea5e9' : '#ccc'
+                          : '#dc2626',
+                        opacity: zone.active ? 1 : 0.6,
+                        cursor: zone.active ? 'pointer' : 'not-allowed'
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (zone.active) toggleZoneAccess(index, zone.id);
+                      }}
+                    >
+                      <div style={styles.knob(hasAccess)}></div>
+                    </div>
                   </div>
-                ))}
-              </div>
-              {/* Inactive zones */}
-              <div style={styles.zoneSubGrid}>
-                <strong>Inactive Zones</strong>
-                {inactiveZones.map(zone => (
-                  <div key={zone.id} style={styles.zoneItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={person.zones.includes(zone.id)}
-                        onChange={() => toggleZoneAccess(index, zone.id)}
-                        disabled={!zone.active}
-                      />
-                      {zone.name}
-                    </label>
-                  </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          </div>
-        ))}
-      </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
- 
+
 export default Zone;
- 

@@ -1,424 +1,284 @@
-// import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import Plot from 'react-plotly.js';
-
-// function ViewReport() {
-//   const navigate = useNavigate();
-
-//   const monthlyVisitorData = {
-//     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-//     counts: [120, 95, 130, 110, 140, 125, 160, 150, 170],
-//   };
-
-//   const styles = {
-//     container: {
-//       position: 'relative',
-//       padding: '20px',
-//       fontFamily: 'Segoe UI, sans-serif',
-//       backgroundColor: '#e6f2ff', // Original soft blue
-//       color: '#000',
-//       minHeight: '100vh',
-//       overflow: 'hidden',
-//     },
-//     backButton: {
-//       position: 'absolute',
-//       top: '20px',
-//       right: '20px',
-//       backgroundColor: '#ff6f61',
-//       color: '#fff',
-//       border: 'none',
-//       padding: '10px 16px',
-//       borderRadius: '8px',
-//       cursor: 'pointer',
-//       fontWeight: 'bold',
-//       boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-//     },
-//     title: {
-//       textAlign: 'center',
-//       marginTop: '20px',
-//       fontSize: '28px',
-//       fontWeight: 'bold',
-//       color: '#333',
-//       textShadow: '1px 1px 2px #fff',
-//     },
-//     grid: {
-//       display: 'grid',
-//       gridTemplateColumns: '1fr 1fr',
-//       gridTemplateRows: '1fr 1fr',
-//       gap: '30px',
-//       marginTop: '40px',
-//       justifyItems: 'center',
-//       alignItems: 'center',
-//     },
-//     chartBox: {
-//       backgroundColor: '#ffffff',
-//       padding: '15px',
-//       borderRadius: '14px',
-//       boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-//       width: '100%',
-//       maxWidth: '400px',
-//     },
-//     chartTitle: {
-//       textAlign: 'center',
-//       fontSize: '18px',
-//       fontWeight: 'bold',
-//       marginBottom: '10px',
-//       color: '#ff6f61',
-//     },
-//   };
-
-//   return (
-//     <div style={styles.container}>
-//       <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
-//         ⬅ Back to Dashboard
-//       </button>
-
-//       <h2 style={styles.title}>🌟 Visitor Report Overview</h2>
-
-//       <div style={styles.grid}>
-//         {/* Chart 1: Visitor Status */}
-//         <div style={styles.chartBox}>
-//           <div style={styles.chartTitle}>Visitor Status Distribution</div>
-//           <Plot
-//             data={[{
-//               type: 'pie',
-//               labels: ['Active Visitors', 'Inactive Visitors'],
-//               values: [3, 2],
-//               hole: 0.3,
-//               marker: { colors: ['#ff6f61', '#ffb347'] },
-//             }]}
-//             layout={{
-//               width: 300,
-//               height: 250,
-//               margin: { t: 20, b: 20, l: 20, r: 20 },
-//               paper_bgcolor: '#ffffff',
-//               font: { color: '#333' },
-//               transition: { duration: 500, easing: 'cubic-in-out' },
-//             }}
-//             config={{ displayModeBar: false }}
-//           />
-//         </div>
-
-//         {/* Chart 2: Gender Distribution */}
-//         <div style={styles.chartBox}>
-//           <div style={styles.chartTitle}>Gender Distribution</div>
-//           <Plot
-//             data={[{
-//               type: 'bar',
-//               x: ['Male Visitors', 'Female Visitors'],
-//               y: [4, 1],
-//               marker: { color: ['#ff6f61', '#ffb347'] },
-//             }]}
-//             layout={{
-//               width: 300,
-//               height: 250,
-//               margin: { t: 20, b: 40, l: 40, r: 20 },
-//               paper_bgcolor: '#ffffff',
-//               font: { color: '#333' },
-//               xaxis: { title: 'Gender' },
-//               yaxis: { title: 'Count' },
-//               transition: { duration: 500, easing: 'cubic-in-out' },
-//             }}
-//             config={{ displayModeBar: false }}
-//           />
-//         </div>
-
-//         {/* Chart 3: Monthly Visitors */}
-//         <div style={styles.chartBox}>
-//           <div style={styles.chartTitle}>Monthly Visitor Count</div>
-//           <Plot
-//             data={[{
-//               type: 'bar',
-//               x: monthlyVisitorData.months,
-//               y: monthlyVisitorData.counts,
-//               marker: { color: '#ff6f61' },
-//             }]}
-//             layout={{
-//               width: 300,
-//               height: 250,
-//               margin: { t: 20, b: 40, l: 40, r: 20 },
-//               paper_bgcolor: '#ffffff',
-//               font: { color: '#333' },
-//               xaxis: { title: 'Month' },
-//               yaxis: { title: 'Visitors' },
-//               transition: { duration: 500, easing: 'cubic-in-out' },
-//             }}
-//             config={{ displayModeBar: false }}
-//           />
-//         </div>
-
-//         {/* Chart 4: Daily Check-ins */}
-//         <div style={styles.chartBox}>
-//           <div style={styles.chartTitle}>Daily Check-ins (Last 7 Days)</div>
-//           <Plot
-//             data={[{
-//               type: 'scatter',
-//               mode: 'lines+markers',
-//               x: ['2025-09-11', '2025-09-12', '2025-09-13', '2025-09-14', '2025-09-15', '2025-09-16', '2025-09-17'],
-//               y: [2, 4, 1, 3, 5, 2, 4],
-//               line: { color: '#ff6f61' },
-//               marker: { color: '#ffb347' },
-//             }]}
-//             layout={{
-//               width: 300,
-//               height: 250,
-//               margin: { t: 20, b: 40, l: 40, r: 20 },
-//               paper_bgcolor: '#ffffff',
-//               font: { color: '#333' },
-//               xaxis: { title: 'Date' },
-//               yaxis: { title: 'Check-ins' },
-//               transition: { duration: 500, easing: 'cubic-in-out' },
-//             }}
-//             config={{ displayModeBar: false }}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ViewReport;
-
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Plot from 'react-plotly.js';
-import { useTheme } from '../ThemeContext';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import Chart from 'react-apexcharts';
+import * as XLSX from 'xlsx';
  
 function ViewReport() {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const [isNightMode, setIsNightMode] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
  
-  // Theme-based colors
-  const bgColor = theme === 'light' ? '#e6f2ff' : '#232526';
-  const textColor = theme === 'light' ? '#000' : '#fff';
-  const cardBg = theme === 'light' ? '#ffffff' : '#2c2c2c';
-  const chartFontColor = theme === 'light' ? '#333' : '#fff';
+  const toggleNightMode = () => setIsNightMode(!isNightMode);
+ 
+  const holidays = [
+    new Date('2025-01-01'),
+    new Date('2025-10-02'),
+    new Date('2025-12-25'),
+  ];
+ 
+  const isHoliday = (date) =>
+    holidays.some(
+      (holiday) =>
+        holiday.getDate() === date.getDate() &&
+        holiday.getMonth() === date.getMonth() &&
+        holiday.getFullYear() === date.getFullYear()
+    );
  
   const monthlyVisitorData = {
-    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    counts: [120, 95, 130, 110, 140, 125, 160, 150, 170],
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+    series: [
+      {
+        name: 'Visitors',
+        data: [120, 95, 130, 110, 140, 125, 160, 150, 170],
+      },
+    ],
+  };
+ 
+  const topVisitors = [
+    { name: 'Amit Sharma', visits: 22 },
+    { name: 'Priya Verma', visits: 18 },
+    { name: 'Ravi Kumar', visits: 15 },
+  ];
+ 
+  const todayVisitors = ['Amit Sharma', 'Ravi Kumar'];
+  const totalVisitors = monthlyVisitorData.series[0].data.reduce((a, b) => a + b, 0);
+  const avgVisitors = Math.round(totalVisitors / monthlyVisitorData.series[0].data.length);
+ 
+  const downloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      monthlyVisitorData.categories.map((month, i) => ({
+        Month: month,
+        Visitors: monthlyVisitorData.series[0].data[i],
+      }))
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Monthly Visitors');
+    XLSX.writeFile(workbook, 'Visitor_Report.xlsx');
   };
  
   const styles = {
     container: {
-      position: 'relative',
-      padding: '20px',
+      padding: '40px',
       fontFamily: 'Segoe UI, sans-serif',
-      backgroundColor: bgColor,
-      color: textColor,
       minHeight: '100vh',
-      overflow: 'hidden',
-      transition: 'background 0.5s, color 0.5s',
+      backgroundColor: isNightMode ? '#1a1a2e' : '#f0f4f8',
+      color: isNightMode ? '#f8f8f8' : '#1a1a2e',
     },
-    backButton: {
-      position: 'absolute',
-      top: '20px',
-      right: '20px',
-      backgroundColor: '#ff6f61',
+    header: {
+      textAlign: 'center',
+      marginBottom: '30px',
+    },
+    title: {
+      fontSize: '32px',
+      fontWeight: 'bold',
+      marginBottom: '10px',
+    },
+    actionBar: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '30px',
+    },
+    button: {
+      backgroundColor: isNightMode ? '#3f3f5f' : '#0077b6',
       color: '#fff',
       border: 'none',
-      padding: '10px 16px',
+      padding: '10px 20px',
       borderRadius: '8px',
       cursor: 'pointer',
       fontWeight: 'bold',
-      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+      marginRight: '10px',
     },
-    toggleSwitch: {
-      position: 'absolute',
-      top: '70px',
-      right: '20px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
+    backButton: {
+      backgroundColor: '#ff6f61',
+      color: '#fff',
+      border: 'none',
+      padding: '10px 20px',
+      borderRadius: '8px',
       cursor: 'pointer',
       fontWeight: 'bold',
-      color: theme === 'light' ? '#ff6f61' : '#ffb347',
-    },
-    switchInput: {
-      width: '40px',
-      height: '20px',
-      position: 'relative',
-      backgroundColor: '#ccc',
-      borderRadius: '20px',
-      transition: 'background 0.3s',
-    },
-    switchSlider: {
-      content: '""',
-      position: 'absolute',
-      top: '2px',
-      left: theme === 'light' ? '2px' : '22px',
-      width: '16px',
-      height: '16px',
-      backgroundColor: '#fff',
-      borderRadius: '50%',
-      transition: 'left 0.3s',
-    },
-    title: {
-      textAlign: 'center',
-      marginTop: '100px',
-      fontSize: '28px',
-      fontWeight: 'bold',
-      color: chartFontColor,
-      textShadow: theme === 'light' ? '1px 1px 2px #fff' : 'none',
     },
     grid: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gridTemplateRows: '1fr 1fr',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
       gap: '30px',
-      marginTop: '40px',
-      justifyItems: 'center',
-      alignItems: 'center',
     },
-    chartBox: {
-      backgroundColor: cardBg,
-      padding: '15px',
-      borderRadius: '14px',
-      boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-      width: '100%',
-      maxWidth: '400px',
-      transition: 'background 0.5s',
+    card: {
+      backgroundColor: isNightMode ? '#2e2e3e' : '#ffffff',
+      padding: '20px',
+      borderRadius: '16px',
+      boxShadow: '0 6px 16px rgba(0,0,0,0.1)',
     },
     chartTitle: {
-      textAlign: 'center',
       fontSize: '18px',
       fontWeight: 'bold',
       marginBottom: '10px',
+      textAlign: 'center',
       color: '#ff6f61',
+    },
+    calendarSection: {
+      marginTop: '50px',
+      padding: '20px',
+      borderRadius: '16px',
+      backgroundColor: isNightMode ? '#2e2e3e' : '#ffffff',
+      boxShadow: '0 6px 16px rgba(0,0,0,0.1)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    calendarTitle: {
+      fontSize: '20px',
+      fontWeight: 'bold',
+      marginBottom: '20px',
+      textAlign: 'center',
+      color: '#0077b6',
+    },
+    todayDot: {
+      backgroundColor: '#0077b6',
+      borderRadius: '50%',
+      width: '6px',
+      height: '6px',
+      margin: 'auto',
+    },
+    sidebar: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: '20px',
+      marginTop: '30px',
+      width: '100%',
+    },
+    statBox: {
+      backgroundColor: isNightMode ? '#3f3f5f' : '#e0f7fa',
+      padding: '15px',
+      borderRadius: '12px',
+    },
+    statTitle: {
+      fontSize: '16px',
+      fontWeight: 'bold',
+      marginBottom: '5px',
+    },
+    statValue: {
+      fontSize: '14px',
+    },
+    quoteBox: {
+      backgroundColor: isNightMode ? '#3f3f5f' : '#fff3cd',
+      padding: '15px',
+      borderRadius: '12px',
+      fontStyle: 'italic',
+      fontSize: '14px',
     },
   };
  
   return (
     <div style={styles.container}>
-      {/* Back Button */}
-      <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
-        ⬅ Back to Dashboard
-      </button>
+      <div style={styles.header}>
+        <div style={styles.title}>🏭 Factory Visitor Insights</div>
+      </div>
  
-      {/* Toggle Switch Button */}
-      <label style={styles.toggleSwitch} onClick={toggleTheme}>
-        <span>{theme === 'light' ? '🌞' : '🌙'}</span>
-        <div style={{ position: 'relative' }}>
-          <div style={styles.switchInput}></div>
-          <div style={styles.switchSlider}></div>
+      <div style={styles.actionBar}>
+        <div>
+          <button style={styles.button} onClick={toggleNightMode}>
+            {isNightMode ? '☀️ Light Mode' : '🌙 Night Mode'}
+          </button>
+          <button style={styles.button} onClick={downloadExcel}>
+            📥 Export Excel
+          </button>
         </div>
-      </label>
- 
-      <h2 style={styles.title}>🌟 Visitor Report Overview</h2>
+        <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
+          ⬅ Back to Dashboard
+        </button>
+      </div>
  
       <div style={styles.grid}>
-        {/* Chart 1: Visitor Status */}
-        <div style={styles.chartBox}>
-          <div style={styles.chartTitle}>Visitor Status Distribution</div>
-          <Plot
-            data={[
-              {
-                type: 'pie',
-                labels: ['Active Visitors', 'Inactive Visitors'],
-                values: [3, 2],
-                hole: 0.3,
-                marker: { colors: ['#ff6f61', '#ffb347'] },
-              },
-            ]}
-            layout={{
-              width: 300,
-              height: 250,
-              margin: { t: 20, b: 20, l: 20, r: 20 },
-              paper_bgcolor: cardBg,
-              font: { color: chartFontColor },
-              transition: { duration: 500, easing: 'cubic-in-out' },
+        <div style={styles.card}>
+          <div style={styles.chartTitle}>Monthly Visitors</div>
+          <Chart
+            options={{
+              chart: { type: 'bar', background: 'transparent' },
+              xaxis: { categories: monthlyVisitorData.categories },
+              theme: { mode: isNightMode ? 'dark' : 'light' },
+              colors: ['#0077b6'],
+              dataLabels: { enabled: false },
             }}
-            config={{ displayModeBar: false }}
+            series={monthlyVisitorData.series}
+            type="bar"
+            height={300}
           />
         </div>
  
-        {/* Chart 2: Gender Distribution */}
-        <div style={styles.chartBox}>
+        <div style={styles.card}>
           <div style={styles.chartTitle}>Gender Distribution</div>
-          <Plot
-            data={[
-              {
-                type: 'bar',
-                x: ['Male Visitors', 'Female Visitors'],
-                y: [4, 1],
-                marker: { color: ['#ff6f61', '#ffb347'] },
-              },
-            ]}
-            layout={{
-              width: 300,
-              height: 250,
-              margin: { t: 20, b: 40, l: 40, r: 20 },
-              paper_bgcolor: cardBg,
-              font: { color: chartFontColor },
-              xaxis: { title: 'Gender', color: chartFontColor },
-              yaxis: { title: 'Count', color: chartFontColor },
-              transition: { duration: 500, easing: 'cubic-in-out' },
+          <Chart
+            options={{
+              labels: ['Male', 'Female'],
+              theme: { mode: isNightMode ? 'dark' : 'light' },
+              colors: ['#ff6f61', '#48cae4'],
             }}
-            config={{ displayModeBar: false }}
+            series={[4, 1]}
+            type="donut"
+            height={300}
           />
         </div>
  
-        {/* Chart 3: Monthly Visitors */}
-        <div style={styles.chartBox}>
-          <div style={styles.chartTitle}>Monthly Visitor Count</div>
-          <Plot
-            data={[
-              {
-                type: 'bar',
-                x: monthlyVisitorData.months,
-                y: monthlyVisitorData.counts,
-                marker: { color: '#ff6f61' },
-              },
-            ]}
-            layout={{
-              width: 300,
-              height: 250,
-              margin: { t: 20, b: 40, l: 40, r: 20 },
-              paper_bgcolor: cardBg,
-              font: { color: chartFontColor },
-              xaxis: { title: 'Month', color: chartFontColor },
-              yaxis: { title: 'Visitors', color: chartFontColor },
-              transition: { duration: 500, easing: 'cubic-in-out' },
-            }}
-            config={{ displayModeBar: false }}
-          />
-        </div>
- 
-        {/* Chart 4: Daily Check-ins */}
-        <div style={styles.chartBox}>
-          <div style={styles.chartTitle}>Daily Check-ins (Last 7 Days)</div>
-          <Plot
-            data={[
-              {
-                type: 'scatter',
-                mode: 'lines+markers',
-                x: [
-                  '2025-09-11',
-                  '2025-09-12',
-                  '2025-09-13',
-                  '2025-09-14',
-                  '2025-09-15',
-                  '2025-09-16',
-                  '2025-09-17',
+        <div style={styles.card}>
+          <div style={styles.chartTitle}>Daily Check-ins</div>
+          <Chart
+            options={{
+              chart: { type: 'line', zoom: { enabled: false } },
+              xaxis: {
+                categories: [
+                  'Sep 11', 'Sep 12', 'Sep 13', 'Sep 14',
+                  'Sep 15', 'Sep 16', 'Sep 17',
                 ],
-                y: [2, 4, 1, 3, 5, 2, 4],
-                line: { color: '#ff6f61' },
-                marker: { color: '#ffb347' },
               },
-            ]}
-            layout={{
-              width: 300,
-              height: 250,
-              margin: { t: 20, b: 40, l: 40, r: 20 },
-              paper_bgcolor: cardBg,
-              font: { color: chartFontColor },
-              xaxis: { title: 'Date', color: chartFontColor },
-              yaxis: { title: 'Check-ins', color: chartFontColor },
-              transition: { duration: 500, easing: 'cubic-in-out' },
+              theme: { mode: isNightMode ? 'dark' : 'light' },
+              stroke: { curve: 'smooth' },
+              colors: ['#00b4d8'],
             }}
-            config={{ displayModeBar: false }}
+            series={[{ name: 'Check-ins', data: [2, 4, 1, 3, 5, 2, 4] }]}
+            type="line"
+            height={300}
           />
+        </div>
+      </div>
+ 
+      <div style={styles.calendarSection}>
+        <div style={styles.calendarTitle}>📅 Holiday Calendar</div>
+        <Calendar
+          value={selectedDate}
+          onChange={setSelectedDate}
+          tileClassName={({ date }) => isHoliday(date) ? 'holiday-tile' : null}
+          tileContent={({ date, view }) =>
+            view === 'month' && date.toDateString() === new Date().toDateString() ? (
+              <div style={styles.todayDot} />
+            ) : null
+          }
+        />
+        <style>{`
+          .holiday-tile {
+            background: #ffdd57 !important;
+            border-radius: 50%;
+          }
+        `}</style>
+ 
+        <div style={styles.sidebar}>
+          <div style={styles.statBox}>
+            <div style={styles.statTitle}>Today's Visitors</div>
+            <div style={styles.statValue}>{todayVisitors.join(', ')}</div>
+          </div>
+          <div style={styles.statBox}>
+            <div style={styles.statTitle}>Total This Month</div>
+            <div style={styles.statValue}>{totalVisitors} visitors</div>
+          </div>
+          <div style={styles.statBox}>
+            <div style={styles.statTitle}>Average Per Day</div>
+            <div style={styles.statValue}>{avgVisitors} visitors</div>
+          </div>
+          <div style={styles.quoteBox}>
+            "Success is the sum of small efforts repeated day in and day out."
+          </div>
         </div>
       </div>
     </div>
@@ -426,7 +286,6 @@ function ViewReport() {
 }
  
 export default ViewReport;
- 
  
 
 
